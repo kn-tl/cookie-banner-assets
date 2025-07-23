@@ -638,7 +638,12 @@ class SilktideCookieBanner {
 			const preferencesButton = this.banner.querySelector(".preferences");
 
 			// Add event listeners to the buttons
-			acceptButton?.addEventListener("click", () => this.handleCookieChoice(true));
+			//acceptButton?.addEventListener("click", () => this.handleCookieChoice(true));
+			acceptButton?.addEventListener("click", () => {
+  				this.handleCookieChoice(true);
+  				window.location.reload();
+			});
+			
 			rejectButton?.addEventListener("click", () => this.handleCookieChoice(false));
 			preferencesButton?.addEventListener("click", () => {
 				this.showBackdrop();
@@ -692,7 +697,12 @@ class SilktideCookieBanner {
 					this.handleClosedWithNoChoice();
 				}
 			});
-			acceptAllButton?.addEventListener("click", () => this.handleCookieChoice(true));
+			//acceptAllButton?.addEventListener("click", () => this.handleCookieChoice(true));
+			acceptAllButton?.addEventListener("click", () => {
+  				this.handleCookieChoice(true);
+  				window.location.reload();
+			});
+			
 			rejectAllButton?.addEventListener("click", () => this.handleCookieChoice(false));
 
 			// Banner Focus Trap
