@@ -346,7 +346,7 @@ class SilktideCookieBanner {
 	}
 
 	hasSetInitialCookieChoices() {
-		return !!localStorage.getItem(`silktideCookieBanner_InitialChoice${this.getBannerSuffix()}`);
+		return !!localStorage.getItem(`cookieConsent_InitialChoice${this.getBannerSuffix()}`);
 	}
 
 	createBanner() {
@@ -381,7 +381,7 @@ class SilktideCookieBanner {
 			return false;
 		}
 		return (
-			localStorage.getItem(`silktideCookieBanner_InitialChoice${this.getBannerSuffix()}`) === null
+			localStorage.getItem(`cookieConsent_InitialChoice${this.getBannerSuffix()}`) === null
 		);
 	}
 
