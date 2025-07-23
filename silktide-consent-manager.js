@@ -338,7 +338,6 @@ class SilktideCookieBanner {
         ${rejectNonEssentialButton}
         <div class="actions-row">
           ${preferencesButton}
-          ${aholdLogo}
         </div>
       </div>
     `;
