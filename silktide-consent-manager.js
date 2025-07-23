@@ -127,10 +127,10 @@ class SilktideCookieBanner {
 				const currentState = checkbox.checked;
 
 				if (cookieType.required) {
-					localStorage.setItem(`silktideCookieChoice_${cookieId}${this.getBannerSuffix()}`, "true");
+					localStorage.setItem(`cookieConsent_${cookieId}${this.getBannerSuffix()}`, "true");
 				} else {
 					localStorage.setItem(
-						`silktideCookieChoice_${cookieId}${this.getBannerSuffix()}`,
+						`cookieConsent_${cookieId}${this.getBannerSuffix()}`,
 						currentState.toString()
 					);
 
@@ -148,7 +148,7 @@ class SilktideCookieBanner {
 					checkbox.disabled = true;
 				} else {
 					const storedValue = localStorage.getItem(
-						`silktideCookieChoice_${cookieId}${this.getBannerSuffix()}`
+						`cookieConsent_${cookieId}${this.getBannerSuffix()}`
 					);
 
 					if (storedValue !== null) {
@@ -180,13 +180,13 @@ class SilktideCookieBanner {
 		this.config.cookieTypes.forEach((type) => {
 			// Set localStorage and run accept/reject callbacks
 			if (type.required == true) {
-				localStorage.setItem(`silktideCookieChoice_${type.id}${this.getBannerSuffix()}`, "true");
+				localStorage.setItem(`cookieConsent_${type.id}${this.getBannerSuffix()}`, "true");
 				if (typeof type.onAccept === "function") {
 					type.onAccept();
 				}
 			} else {
 				localStorage.setItem(
-					`silktideCookieChoice_${type.id}${this.getBannerSuffix()}`,
+					`cookieConsent_${type.id}${this.getBannerSuffix()}`,
 					accepted.toString()
 				);
 
@@ -220,7 +220,7 @@ class SilktideCookieBanner {
 	getAcceptedCookies() {
 		return (this.config.cookieTypes || []).reduce((acc, cookieType) => {
 			acc[cookieType.id] =
-				localStorage.getItem(`silktideCookieChoice_${cookieType.id}${this.getBannerSuffix()}`) ===
+				localStorage.getItem(`cookieConsent_${cookieType.id}${this.getBannerSuffix()}`) ===
 				"true";
 			return acc;
 		}, {});
@@ -259,7 +259,7 @@ class SilktideCookieBanner {
 	runStoredCookiePreferenceCallbacks() {
 		this.config.cookieTypes.forEach((type) => {
 			const accepted =
-				localStorage.getItem(`silktideCookieChoice_${type.id}${this.getBannerSuffix()}`) === "true";
+				localStorage.getItem(`cookieConsent_${type.id}${this.getBannerSuffix()}`) === "true";
 			// Set localStorage and run accept/reject callbacks
 			if (accepted) {
 				if (typeof type.onAccept === "function") {
@@ -333,9 +333,9 @@ class SilktideCookieBanner {
 
 		const bannerContent = `
       ${bannerDescription}
-      <div class="actions">                               
+      <div class="actions">           
+	    ${rejectNonEssentialButton}                    
         ${acceptAllButton}
-        ${rejectNonEssentialButton}
         <div class="actions-row">
           ${preferencesButton}
         </div>
@@ -586,18 +586,18 @@ class SilktideCookieBanner {
 			// Set localStorage and run accept/reject callbacks
 			if (type.required == true) {
 				localStorage.setItem(
-					`silktideCookieChoice_${type.id}${this.getBannerSuffix()}`,
+					`cookieConsent_${type.id}${this.getBannerSuffix()}`,
 					accepted.toString()
 				);
 			} else if (type.defaultValue) {
 				localStorage.setItem(
-					`silktideCookieChoice_${type.id}${this.getBannerSuffix()}`,
+					`cookieConsent_${type.id}${this.getBannerSuffix()}`,
 					accepted.toString()
 				);
 			} else {
 				accepted = false;
 				localStorage.setItem(
-					`silktideCookieChoice_${type.id}${this.getBannerSuffix()}`,
+					`cookieConsent_${type.id}${this.getBannerSuffix()}`,
 					accepted.toString()
 				);
 			}
@@ -730,7 +730,7 @@ class SilktideCookieBanner {
 					const [, cookieId] = event.target.id.split("cookies-");
 					const isAccepted = event.target.checked;
 					const previousValue =
-						localStorage.getItem(`silktideCookieChoice_${cookieId}${this.getBannerSuffix()}`) ===
+						localStorage.getItem(`cookieConsent_${cookieId}${this.getBannerSuffix()}`) ===
 						"true";
 
 					// Only proceed if the value has actually changed
@@ -741,7 +741,7 @@ class SilktideCookieBanner {
 						if (cookieType) {
 							// Update localStorage
 							localStorage.setItem(
-								`silktideCookieChoice_${cookieId}${this.getBannerSuffix()}`,
+								`cookieConsent_${cookieId}${this.getBannerSuffix()}`,
 								isAccepted.toString()
 							);
 
