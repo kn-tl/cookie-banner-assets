@@ -162,7 +162,7 @@ class SilktideCookieBanner {
 	}
 
 	setInitialCookieChoiceMade() {
-		window.localStorage.setItem(`silktideCookieBanner_InitialChoice${this.getBannerSuffix()}`, 1);
+		window.localStorage.setItem(`cookieConsent_InitialChoice${this.getBannerSuffix()}`, 1);
 	}
 
 	// ----------------------------------------------------------------
@@ -306,7 +306,7 @@ class SilktideCookieBanner {
 			this.config.text?.banner?.rejectNonEssentialButtonText || "Reject non-essential";
 		const rejectNonEssentialButtonLabel =
 			this.config.text?.banner?.rejectNonEssentialButtonAccessibleLabel;
-		const rejectNonEssentialButton = `<button class="reject-all st-button st-button--primary"${
+		const rejectNonEssentialButton = `<button class="reject-all st-button st-button--secondary"${
 			rejectNonEssentialButtonLabel &&
 			rejectNonEssentialButtonLabel !== rejectNonEssentialButtonText
 				? ` aria-label="${rejectNonEssentialButtonLabel}"`
