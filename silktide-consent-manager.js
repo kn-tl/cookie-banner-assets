@@ -165,7 +165,7 @@ class SilktideCookieBanner {
 
 	saveConsentVersion() {
 		if (this.config.consentVersion) {
-			localStorage.setItem(`cookieConsent_Version${this.getBannerSuffix()}`, this.config.consentVersion);
+			localStorage.setItem(`cookieConsent_version${this.getBannerSuffix()}`, this.config.consentVersion);
 		}
 	}
 
@@ -212,7 +212,7 @@ class SilktideCookieBanner {
 	}
 
 	getConsentVersion() {
-		return localStorage.getItem(`cookieConsent_Version${this.getBannerSuffix()}`);
+		return localStorage.getItem(`cookieConsent_version${this.getBannerSuffix()}`);
 	}
 
 	// ----------------------------------------------------------------
