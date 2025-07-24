@@ -342,12 +342,12 @@ class SilktideCookieBanner {
 
 		const bannerContent = `
       ${bannerDescription}
+      <div class="actions-row">
+          ${preferencesButton}
+        </div>
       <div class="actions">           
 	    ${rejectNonEssentialButton}                    
         ${acceptAllButton}
-        <div class="actions-row">
-          ${preferencesButton}
-        </div>
       </div>
     `;
 
