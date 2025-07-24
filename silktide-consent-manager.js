@@ -174,7 +174,7 @@ class SilktideCookieBanner {
 
 		// Save consent version to localStorage if it exists in config
 		if (this.config.consentVersion) {
-			localStorage.setItem(`cookieConsent_Version${this.getBannerSuffix()}`, this.config.consentVersion);
+			localStorage.setItem(`cookieConsent_version${this.getBannerSuffix()}`, this.config.consentVersion);
 		}
 
 		this.removeBanner();
@@ -232,7 +232,7 @@ class SilktideCookieBanner {
 	}
 
 	getConsentVersion() {
-		return localStorage.getItem(`cookieConsent_Version${this.getBannerSuffix()}`);
+		return localStorage.getItem(`cookieConsent_version${this.getBannerSuffix()}`);
 	}
 
 	runAcceptedCookieCallbacks() {
@@ -846,7 +846,7 @@ class SilktideCookieBanner {
 
 		// Save consent version to localStorage if it exists in config
 		if (this.config.consentVersion) {
-			localStorage.setItem(`cookieConsent_Version${this.getBannerSuffix()}`, this.config.consentVersion);
+			localStorage.setItem(`cookieConsent_version${this.getBannerSuffix()}`, this.config.consentVersion);
 		}
 	}
 
