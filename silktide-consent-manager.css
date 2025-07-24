@@ -227,7 +227,19 @@
     #silktide-banner .actions {
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
     }
+}
+
+#silktide-banner .actions-left {
+    display: flex;
+    align-items: center;
+}
+
+#silktide-banner .actions-right {
+    display: flex;
+    gap: 16px;
+    align-items: center;
 }
 
 #silktide-banner .actions-row {
