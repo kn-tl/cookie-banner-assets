@@ -535,6 +535,19 @@ class SilktideCookieBanner {
 		}
 	}
 
+	hideModalWithoutSaving() {
+		if (!this.modal) return;
+
+		this.modal.style.display = "none";
+		this.hideBackdrop();
+		this.allowBodyScroll();
+
+		// Trigger optional onPreferencesClose callback
+		if (typeof this.config.onPreferencesClose === "function") {
+			this.config.onPreferencesClose();
+		}
+	}
+
 	// ----------------------------------------------------------------
 	// Cookie Icon
 	// ----------------------------------------------------------------
@@ -696,8 +709,8 @@ class SilktideCookieBanner {
       const confirmButton = this.modal.querySelector(".preferences-confirm");
 
 			closeButton?.addEventListener("click", () => {
-				// Hide modal and backdrop
-				this.toggleModal(false);
+				// Hide modal and backdrop without saving localStorage
+				this.hideModalWithoutSaving();
 				
 				// Show banner again
 				this.createBanner();
