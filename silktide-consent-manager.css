@@ -256,7 +256,7 @@
     font-family: var(--fontFamily);
     color: var(--textColor);
     flex-direction: column;
-    padding: 20px;
+    padding: 15px;
     background-color: var(--backgroundColor);
     border-radius: 5px;
     box-sizing: border-box;
@@ -269,7 +269,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     gap: 16px;
 }
 
@@ -301,7 +301,7 @@
 #silktide-modal section {
     flex: 1;
     overflow-y: auto;
-    margin-top: 20px;
+    margin-top: 15px;
     padding-right: 7px; /* Prevents scrollbar from appearing over the switches */
 }
 
@@ -329,7 +329,7 @@
 #silktide-modal fieldset {
     padding: 0px;
     border: none;
-    margin: 0px 0px 20px;
+    margin: 0px 0px 15px;
 }
 
 #silktide-modal fieldset:last-of-type {
@@ -447,8 +447,8 @@
 #silktide-modal footer {
     display: flex;
     flex-direction: column;
-    gap: 1px;
-    margin-top: 1px;
+    gap: 16px;
+    margin-top: 10px;
     align-items: center;
 }
 
