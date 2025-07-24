@@ -726,8 +726,13 @@ class SilktideCookieBanner {
 			rejectAllButton?.addEventListener("click", () => this.handleCookieChoice(false));
 
       confirmButton?.addEventListener("click", () => {
-        const closeButton = this.modal.querySelector(".modal-close");
-        closeButton?.click();
+        // Hide modal without saving localStorage
+        this.hideModalWithoutSaving();
+        
+        // Show banner again
+        this.createBanner();
+        this.showBackdrop();
+        
         window.location.reload();
       });
 
