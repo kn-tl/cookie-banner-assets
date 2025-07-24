@@ -447,8 +447,8 @@
 #silktide-modal footer {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-top: 15px;
+    gap: 1px;
+    margin-top: 1px;
     align-items: center;
 }
 
