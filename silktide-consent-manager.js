@@ -141,6 +141,9 @@ class SilktideCookieBanner {
 						cookieType.onReject();
 					}
 				}
+
+				// Set consent version when saving to storage
+				this.setConsentVersion();
 			} else {
 				// When reading values (opening modal)
 				if (cookieType.required) {
@@ -171,6 +174,9 @@ class SilktideCookieBanner {
 	handleCookieChoice(accepted) {
 		// We set that an initial choice was made regardless of what it was so we don't show the banner again
 		this.setInitialCookieChoiceMade();
+
+		// Set consent version
+		this.setConsentVersion();
 
 		this.removeBanner();
 		this.hideBackdrop();
@@ -215,6 +221,16 @@ class SilktideCookieBanner {
 
 		// finally update the checkboxes in the modal with the values from localStorage
 		this.updateCheckboxState();
+	}
+
+	setConsentVersion() {
+		// Set a static consent version - can be configured in the config
+		const consentVersion = this.config.consentVersion || "3.0";
+		localStorage.setItem(`cookieConsent_Version${this.getBannerSuffix()}`, consentVersion);
+	}
+
+	getConsentVersion() {
+		return localStorage.getItem(`cookieConsent_Version${this.getBannerSuffix()}`) || null;
 	}
 
 	getAcceptedCookies() {
@@ -582,6 +598,9 @@ class SilktideCookieBanner {
 	 * We apply the default values and the necessary values as default
 	 */
 	handleClosedWithNoChoice() {
+		// Set consent version
+		this.setConsentVersion();
+
 		this.config.cookieTypes.forEach((type) => {
 			let accepted = true;
 			// Set localStorage and run accept/reject callbacks
