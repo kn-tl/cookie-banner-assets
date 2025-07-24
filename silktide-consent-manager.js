@@ -719,6 +719,7 @@ class SilktideCookieBanner {
       confirmButton?.addEventListener("click", () => {
         const closeButton = this.modal.querySelector(".modal-close");
         closeButton?.click();
+        window.location.reload();
       });
 
 			// Banner Focus Trap
