@@ -696,11 +696,14 @@ class SilktideCookieBanner {
       const confirmButton = this.modal.querySelector(".preferences-confirm");
 
 			closeButton?.addEventListener("click", () => {
-				// Hide modal and show banner instead of closing
+				// Hide modal and backdrop
 				this.toggleModal(false);
+				
+				// Show banner again
 				this.createBanner();
 				this.showBackdrop();
 			});
+			
 			//acceptAllButton?.addEventListener("click", () => this.handleCookieChoice(true));
 			acceptAllButton?.addEventListener("click", () => {
   				this.handleCookieChoice(true);
