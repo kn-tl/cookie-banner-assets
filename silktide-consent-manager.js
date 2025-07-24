@@ -373,6 +373,64 @@ class SilktideCookieBanner {
 		}
 	}
 
+	createBannerWithEventListeners() {
+		// Create banner element
+		this.createBanner();
+		
+		// Setup event listeners for the banner
+		this.setupBannerEventListeners();
+	}
+
+	setupBannerEventListeners() {
+		// Check Banner exists before trying to add event listeners
+		if (this.banner) {
+			// Get the buttons
+			const acceptButton = this.banner.querySelector(".accept-all");
+			const rejectButton = this.banner.querySelector(".reject-all");
+			const preferencesButton = this.banner.querySelector(".preferences");
+
+			// Add event listeners to the buttons
+			//acceptButton?.addEventListener("click", () => this.handleCookieChoice(true));
+			acceptButton?.addEventListener("click", () => {
+  				this.handleCookieChoice(true);
+  				window.location.reload();
+			});
+			
+			rejectButton?.addEventListener("click", () => this.handleCookieChoice(false));
+			preferencesButton?.addEventListener("click", () => {
+				this.showBackdrop();
+				this.toggleModal(true);
+			});
+
+			// Focus Trap
+			const focusableElements = this.getFocusableElements(this.banner);
+			const firstFocusableEl = focusableElements[0];
+			const lastFocusableEl = focusableElements[focusableElements.length - 1];
+
+			// Add keydown event listener to handle tab navigation
+			this.banner.addEventListener("keydown", (e) => {
+				if (e.key === "Tab") {
+					if (e.shiftKey) {
+						if (document.activeElement === firstFocusableEl) {
+							lastFocusableEl.focus();
+							e.preventDefault();
+						}
+					} else {
+						if (document.activeElement === lastFocusableEl) {
+							firstFocusableEl.focus();
+							e.preventDefault();
+						}
+					}
+				}
+			});
+
+			// Set initial focus
+			if (this.config.mode !== "wizard") {
+				acceptButton?.focus();
+			}
+		}
+	}
+
 	removeBanner() {
 		if (this.banner && this.banner.parentNode) {
 			this.banner.parentNode.removeChild(this.banner);
@@ -653,52 +711,9 @@ class SilktideCookieBanner {
 	// Event Listeners
 	// ----------------------------------------------------------------
 	setupEventListeners() {
-		// Check Banner exists before trying to add event listeners
+		// Setup banner event listeners if banner exists
 		if (this.banner) {
-			// Get the buttons
-			const acceptButton = this.banner.querySelector(".accept-all");
-			const rejectButton = this.banner.querySelector(".reject-all");
-			const preferencesButton = this.banner.querySelector(".preferences");
-
-			// Add event listeners to the buttons
-			//acceptButton?.addEventListener("click", () => this.handleCookieChoice(true));
-			acceptButton?.addEventListener("click", () => {
-  				this.handleCookieChoice(true);
-  				window.location.reload();
-			});
-			
-			rejectButton?.addEventListener("click", () => this.handleCookieChoice(false));
-			preferencesButton?.addEventListener("click", () => {
-				this.showBackdrop();
-				this.toggleModal(true);
-			});
-
-			// Focus Trap
-			const focusableElements = this.getFocusableElements(this.banner);
-			const firstFocusableEl = focusableElements[0];
-			const lastFocusableEl = focusableElements[focusableElements.length - 1];
-
-			// Add keydown event listener to handle tab navigation
-			this.banner.addEventListener("keydown", (e) => {
-				if (e.key === "Tab") {
-					if (e.shiftKey) {
-						if (document.activeElement === firstFocusableEl) {
-							lastFocusableEl.focus();
-							e.preventDefault();
-						}
-					} else {
-						if (document.activeElement === lastFocusableEl) {
-							firstFocusableEl.focus();
-							e.preventDefault();
-						}
-					}
-				}
-			});
-
-			// Set initial focus
-			if (this.config.mode !== "wizard") {
-				acceptButton?.focus();
-			}
+			this.setupBannerEventListeners();
 		}
 
 		// Check Modal exists before trying to add event listeners
@@ -712,8 +727,8 @@ class SilktideCookieBanner {
 				// Hide modal and backdrop without saving localStorage
 				this.hideModalWithoutSaving();
 				
-				// Show banner again
-				this.createBanner();
+				// Show banner again with event listeners
+				this.createBannerWithEventListeners();
 				this.showBackdrop();
 			});
 			
@@ -729,8 +744,8 @@ class SilktideCookieBanner {
         // Hide modal without saving localStorage
         this.hideModalWithoutSaving();
         
-        // Show banner again
-        this.createBanner();
+        // Show banner again with event listeners
+        this.createBannerWithEventListeners();
         this.showBackdrop();
         
         window.location.reload();
