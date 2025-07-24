@@ -741,7 +741,10 @@ class SilktideCookieBanner {
 			rejectAllButton?.addEventListener("click", () => this.handleCookieChoice(false));
 
       confirmButton?.addEventListener("click", () => {
-        // Hide modal without saving localStorage
+        // Save current checkbox states to localStorage
+        this.saveCurrentCheckboxStates();
+        
+        // Hide modal and backdrop
         this.hideModalWithoutSaving();
         
         // Show banner again with event listeners
@@ -783,32 +786,8 @@ class SilktideCookieBanner {
 
 			checkboxes.forEach((checkbox) => {
 				checkbox.addEventListener("change", (event) => {
-					const [, cookieId] = event.target.id.split("cookies-");
-					const isAccepted = event.target.checked;
-					const previousValue =
-						localStorage.getItem(`cookieConsent_${cookieId}${this.getBannerSuffix()}`) ===
-						"true";
-
-					// Only proceed if the value has actually changed
-					if (isAccepted !== previousValue) {
-						// Find the corresponding cookie type
-						const cookieType = this.config.cookieTypes.find((type) => type.id === cookieId);
-
-						if (cookieType) {
-							// Update localStorage
-							localStorage.setItem(
-								`cookieConsent_${cookieId}${this.getBannerSuffix()}`,
-								isAccepted.toString()
-							);
-
-							// Run the appropriate callback only if the value changed
-							if (isAccepted && typeof cookieType.onAccept === "function") {
-								cookieType.onAccept();
-							} else if (!isAccepted && typeof cookieType.onReject === "function") {
-								cookieType.onReject();
-							}
-						}
-					}
+					// Only update the checkbox state visually, don't save to localStorage
+					// localStorage will be saved when "Bevestig" is clicked
 				});
 			});
 		}
@@ -832,6 +811,40 @@ class SilktideCookieBanner {
 					this.toggleModal(false);
 				}
 			});
+		}
+	}
+
+	saveCurrentCheckboxStates() {
+		const preferencesSection = this.modal.querySelector("#cookie-preferences");
+		const checkboxes = preferencesSection.querySelectorAll('input[type="checkbox"]');
+
+		checkboxes.forEach((checkbox) => {
+			const [, cookieId] = checkbox.id.split("cookies-");
+			const isAccepted = checkbox.checked;
+			const cookieType = this.config.cookieTypes.find((type) => type.id === cookieId);
+
+			if (cookieType) {
+				// Save to localStorage
+				localStorage.setItem(
+					`cookieConsent_${cookieId}${this.getBannerSuffix()}`,
+					isAccepted.toString()
+				);
+
+				// Run the appropriate callback
+				if (isAccepted && typeof cookieType.onAccept === "function") {
+					cookieType.onAccept();
+				} else if (!isAccepted && typeof cookieType.onReject === "function") {
+					cookieType.onReject();
+				}
+			}
+		});
+
+		// Set that an initial choice was made
+		this.setInitialCookieChoiceMade();
+
+		// Save consent version to localStorage if it exists in config
+		if (this.config.consentVersion) {
+			localStorage.setItem(`cookieConsent_Version${this.getBannerSuffix()}`, this.config.consentVersion);
 		}
 	}
 
