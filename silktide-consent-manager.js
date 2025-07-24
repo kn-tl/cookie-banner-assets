@@ -585,9 +585,6 @@ class SilktideCookieBanner {
 
 		confirmButton?.addEventListener("click", () => {
 			this.saveCurrentCheckboxStates();
-			this.hideModalWithoutSaving();
-			this.createBannerWithEventListeners();
-			this.showBackdrop();
 			window.location.reload();
 		});
 
