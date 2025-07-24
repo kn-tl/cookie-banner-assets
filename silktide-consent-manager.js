@@ -696,18 +696,12 @@ class SilktideCookieBanner {
       const confirmButton = this.modal.querySelector(".preferences-confirm");
 
 			closeButton?.addEventListener("click", () => {
+				// Instead of closing the modal, go back to the banner
 				this.toggleModal(false);
-
-				const hasMadeFirstChoice = this.hasSetInitialCookieChoices();
-
-				if (hasMadeFirstChoice) {
-					// run through the callbacks based on the current localStorage state
-					this.runStoredCookiePreferenceCallbacks();
-				} else {
-					// handle the case where the user closes without making a choice for the first time
-					this.handleClosedWithNoChoice();
-				}
+				this.createBanner();
+				this.showBackdrop();
 			});
+			
 			//acceptAllButton?.addEventListener("click", () => this.handleCookieChoice(true));
 			acceptAllButton?.addEventListener("click", () => {
   				this.handleCookieChoice(true);
