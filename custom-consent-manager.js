@@ -1,6 +1,7 @@
-// Silktide Consent Manager - https://silktide.com/consent-manager/
+// Custom Consent Manager - Based on Silktide Consent Manager
+// Original: https://silktide.com/consent-manager/
 
-class SilktideCookieBanner {
+class CustomCookieBanner {
 	constructor(config = {}) {
 		this.config = config;
 		this.elements = {
@@ -62,7 +63,7 @@ class SilktideCookieBanner {
 	// ----------------------------------------------------------------
 	createWrapper() {
 		this.elements.wrapper = document.createElement("div");
-		this.elements.wrapper.id = "silktide-wrapper";
+		this.elements.wrapper.id = "custom-wrapper";
 		document.body.insertBefore(this.elements.wrapper, document.body.firstChild);
 	}
 
@@ -83,7 +84,7 @@ class SilktideCookieBanner {
 	// Backdrop Management
 	// ----------------------------------------------------------------
 	createBackdrop() {
-		this.elements.backdrop = this.createWrapperChild(null, "silktide-backdrop");
+		this.elements.backdrop = this.createWrapperChild(null, "custom-backdrop");
 	}
 
 	showBackdrop() {
@@ -167,6 +168,11 @@ class SilktideCookieBanner {
 		if (this.config.consentVersion) {
 			localStorage.setItem(`cookieConsent_version${this.getBannerSuffix()}`, this.config.consentVersion);
 		}
+		
+		// Save consent date if provided in config
+		if (this.config.consentDate) {
+			localStorage.setItem(`cookieConsent_date${this.getBannerSuffix()}`, this.config.consentDate);
+		}
 	}
 
 	hideBannerAndShowIcon() {
@@ -213,6 +219,10 @@ class SilktideCookieBanner {
 
 	getConsentVersion() {
 		return localStorage.getItem(`cookieConsent_version${this.getBannerSuffix()}`);
+	}
+
+	getConsentDate() {
+		return localStorage.getItem(`cookieConsent_date${this.getBannerSuffix()}`);
 	}
 
 	// ----------------------------------------------------------------
@@ -311,7 +321,7 @@ class SilktideCookieBanner {
 	}
 
 	createBanner() {
-		this.elements.banner = this.createWrapperChild(this.getBannerContent(), "silktide-banner");
+		this.elements.banner = this.createWrapperChild(this.getBannerContent(), "custom-banner");
 
 		if (this.elements.banner && this.config.position?.banner) {
 			this.elements.banner.classList.add(this.config.position.banner);
@@ -433,7 +443,7 @@ class SilktideCookieBanner {
 	}
 
 	createModal() {
-		this.elements.modal = this.createWrapperChild(this.getModalContent(), "silktide-modal");
+		this.elements.modal = this.createWrapperChild(this.getModalContent(), "custom-modal");
 	}
 
 	toggleModal(show) {
@@ -513,7 +523,7 @@ class SilktideCookieBanner {
 
 	createCookieIcon() {
 		this.elements.cookieIcon = document.createElement("button");
-		this.elements.cookieIcon.id = "silktide-cookie-icon";
+		this.elements.cookieIcon.id = "custom-cookie-icon";
 		this.elements.cookieIcon.innerHTML = this.getCookieIconContent();
 
 		if (this.config.text?.banner?.preferencesButtonAccessibleLabel) {
@@ -694,7 +704,7 @@ class SilktideCookieBanner {
 // Global Manager
 // ----------------------------------------------------------------
 (function () {
-	window.silktideCookieBannerManager = {};
+	window.customCookieBannerManager = {};
 
 	let config = {};
 	let cookieBanner;
@@ -716,7 +726,7 @@ class SilktideCookieBanner {
 
 	const initCookieBanner = () => {
 		if (!cookieBanner) {
-			cookieBanner = new SilktideCookieBanner(config);
+			cookieBanner = new CustomCookieBanner(config);
 		}
 	};
 
@@ -737,13 +747,15 @@ class SilktideCookieBanner {
 	};
 
 	// Public API
-	window.silktideCookieBannerManager.updateCookieBannerConfig = updateCookieBannerConfig;
-	window.silktideCookieBannerManager.initCookieBanner = initCookieBanner;
-	window.silktideCookieBannerManager.injectScript = injectScript;
-	window.silktideCookieBannerManager.getAcceptedCookies = () => 
+	window.customCookieBannerManager.updateCookieBannerConfig = updateCookieBannerConfig;
+	window.customCookieBannerManager.initCookieBanner = initCookieBanner;
+	window.customCookieBannerManager.injectScript = injectScript;
+	window.customCookieBannerManager.getAcceptedCookies = () => 
 		cookieBanner?.getAcceptedCookies() ?? {};
-	window.silktideCookieBannerManager.getConsentVersion = () => 
+	window.customCookieBannerManager.getConsentVersion = () => 
 		cookieBanner?.getConsentVersion() ?? null;
+	window.customCookieBannerManager.getConsentDate = () => 
+		cookieBanner?.getConsentDate() ?? null;
 
 	// Initialize on DOM ready
 	if (document.readyState === "loading") {
