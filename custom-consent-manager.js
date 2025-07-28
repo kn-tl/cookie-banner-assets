@@ -152,7 +152,7 @@ class CustomCookieBanner {
 	// Consent Management
 	// ----------------------------------------------------------------
 	setInitialCookieChoiceMade() {
-		localStorage.setItem(`cookieConsent_InitialChoice${this.getBannerSuffix()}`, "1");
+		localStorage.setItem(`consent_InitialChoice${this.getBannerSuffix()}`, "1");
 	}
 
 	handleCookieChoice(accepted) {
@@ -166,12 +166,12 @@ class CustomCookieBanner {
 
 	saveConsentVersion() {
 		if (this.config.consentVersion) {
-			localStorage.setItem(`cookieConsent_version${this.getBannerSuffix()}`, this.config.consentVersion);
+			localStorage.setItem(`consent_version${this.getBannerSuffix()}`, this.config.consentVersion);
 		}
 		
 		// Save consent date if provided in config
 		if (this.config.consentDate) {
-			localStorage.setItem(`cookieConsent_date${this.getBannerSuffix()}`, this.config.consentDate);
+			localStorage.setItem(`consent_date${this.getBannerSuffix()}`, this.config.consentDate);
 		}
 	}
 
@@ -218,11 +218,11 @@ class CustomCookieBanner {
 	}
 
 	getConsentVersion() {
-		return localStorage.getItem(`cookieConsent_version${this.getBannerSuffix()}`);
+		return localStorage.getItem(`consent_version${this.getBannerSuffix()}`);
 	}
 
 	getConsentDate() {
-		return localStorage.getItem(`cookieConsent_date${this.getBannerSuffix()}`);
+		return localStorage.getItem(`consent_date${this.getBannerSuffix()}`);
 	}
 
 	// ----------------------------------------------------------------
@@ -317,7 +317,7 @@ class CustomCookieBanner {
 	}
 
 	hasSetInitialCookieChoices() {
-		return !!localStorage.getItem(`cookieConsent_InitialChoice${this.getBannerSuffix()}`);
+		return !!localStorage.getItem(`consent_InitialChoice${this.getBannerSuffix()}`);
 	}
 
 	createBanner() {
@@ -680,11 +680,11 @@ class CustomCookieBanner {
 	}
 
 	setCookieConsent(cookieId, value) {
-		localStorage.setItem(`cookieConsent_${cookieId}${this.getBannerSuffix()}`, value.toString());
+		localStorage.setItem(`consent_${cookieId}${this.getBannerSuffix()}`, value.toString());
 	}
 
 	getCookieConsent(cookieId) {
-		return localStorage.getItem(`cookieConsent_${cookieId}${this.getBannerSuffix()}`) === "true";
+		return localStorage.getItem(`consent_${cookieId}${this.getBannerSuffix()}`) === "true";
 	}
 
 	preventBodyScroll() {
