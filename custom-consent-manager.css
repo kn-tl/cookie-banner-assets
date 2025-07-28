@@ -298,8 +298,6 @@
     cursor: pointer;
     background: var(--backgroundColor);
     color: var(--primaryColor);
-    font-size: 18px;
-    font-weight: bold;
     align-items: center;
     justify-content: center;
 }
