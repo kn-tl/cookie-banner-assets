@@ -282,8 +282,9 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid var(--primaryColor);
+    padding: 20px;
+    background-color: var(--backgroundColor);
+    border-radius: 5px 5px 0 0;
     gap: 16px;
 }
 
