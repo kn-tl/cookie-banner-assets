@@ -387,10 +387,10 @@ class CustomCookieBanner {
 		const cookieFields = cookieTypes.map(type => this.createCookieField(type, acceptedCookieMap)).join("");
 
 		return `
-			<header>
+			<div class="modal-header">
 				<h1>${title}</h1>
 				${closeButton}
-			</header>
+			</div>
 			${description}
 			<section id="cookie-preferences">
 				${cookieFields}
