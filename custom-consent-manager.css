@@ -13,7 +13,7 @@
 /* Wrapper (Global) */
 #custom-wrapper {
     --focus: 0 0 0 2px #ffffff, 0 0 0 4px #000000, 0 0 0 6px #ffffff;
-    --boxShadow: -5px 5px 10px 0px #00000012, 0px 0px 50px 0px #0000001a;
+/*    --boxShadow: -5px 5px 10px 0px #00000012, 0px 0px 50px 0px #0000001a; */
     --fontFamily: Helvetica Neue, Segoe UI, Arial, sans-serif;
     --primaryColor: #135856;
     --backgroundColor: #FFFFFF;
@@ -93,9 +93,6 @@
     line-height: 24px;
     cursor: pointer;
     border-radius: 5px;
-}
-
-#custom-wrapper .st-button--primary {
 }
 
 #custom-wrapper .st-button--primary:hover {
@@ -283,18 +280,14 @@
     align-items: center;
     margin-bottom: 15px;
     gap: 16px;
-    background: transparent;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 15px;
 }
 
 #custom-modal h1 {
     font-family: var(--fontFamily);
     color: var(--textColor);
     font-size: 24px;
-    font-weight: 600;
+    font-weight: 500;
     margin: 0px;
-    line-height: 1.2;
 }
 
 #custom-modal .modal-close {
