@@ -434,8 +434,8 @@ class CustomCookieBanner {
 						<input type="checkbox" id="cookies-${type.id}" ${checkedAttr} />
 						<span class="switch__pill" aria-hidden="true"></span>
 						<span class="switch__dot" aria-hidden="true"></span>
-						<span class="switch__off" aria-hidden="true">Uit</span>
-						<span class="switch__on" aria-hidden="true">Aan</span>
+						<span class="switch__off" aria-hidden="true"></span>
+						<span class="switch__on" aria-hidden="true"></span>
 					</label>
 				</div>
 			</fieldset>
