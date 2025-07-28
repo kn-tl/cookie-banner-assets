@@ -598,3 +598,62 @@
         transform: translate(0px, 0px);
     }
 }
+
+/* --------------------------------
+  Modal - Header - Maximum Override Protection
+-------------------------------- */
+#custom-wrapper #custom-modal header,
+#custom-wrapper #custom-modal header.header,
+#custom-wrapper #custom-modal > header,
+div#custom-wrapper div#custom-modal header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 15px !important;
+    gap: 16px !important;
+    background-color: transparent !important;
+    background: none !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    height: auto !important;
+    left: auto !important;
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    z-index: auto !important;
+    padding: 0 !important;
+    margin: 0 0 15px 0 !important;
+    transition: none !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow: visible !important;
+    float: none !important;
+    clear: none !important;
+    outline: none !important;
+    text-shadow: none !important;
+    font-family: var(--fontFamily) !important;
+    font-size: inherit !important;
+    font-weight: normal !important;
+    line-height: normal !important;
+    text-align: left !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    white-space: normal !important;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+}
