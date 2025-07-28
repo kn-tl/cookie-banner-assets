@@ -134,6 +134,7 @@
     opacity: 0;
     animation: custom-slideInDown 350ms ease-out forwards;
     animation-delay: 0.3s;
+    box-shadow: -5px 5px 10px 0px #00000012, 0px 0px 50px 0px #0000001a;
 }
 
 #custom-banner:focus {
@@ -263,6 +264,7 @@
     transform: translate(0px, -20px);
     opacity: 0;
     animation: custom-slideInUp-center 350ms ease-out forwards;
+    box-shadow: -5px 5px 10px 0px #00000012, 0px 0px 50px 0px #0000001a;
     font-family: var(--fontFamily);
     color: var(--textColor);
     flex-direction: column;
@@ -279,14 +281,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     gap: 16px;
+    background: transparent;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
 }
 
 #custom-modal h1 {
     font-family: var(--fontFamily);
-    color: var(--primaryColor);
-    font-size: 28px;
+    color: var(--textColor);
+    font-size: 24px;
     font-weight: 600;
     margin: 0px;
     line-height: 1.2;
