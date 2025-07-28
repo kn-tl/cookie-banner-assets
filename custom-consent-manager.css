@@ -410,20 +410,24 @@
 #custom-modal .switch__off,
 #custom-modal .switch__on {
     text-transform: uppercase;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--backgroundColor);
     position: absolute;
-    top: 7px;
-    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
     transition: right 150ms ease-out, opacity 150ms ease-out;
+    line-height: 1;
+    text-align: center;
 }
 
 #custom-modal .switch__off {
+    right: 8px;
     opacity: 1;
 }
 
 #custom-modal .switch__on {
+    left: 8px;
     opacity: 0;
 }
 
@@ -437,12 +441,12 @@
 }
 
 #custom-modal .switch input:checked ~ .switch__off {
-    right: calc(100% - 32px);
+    right: calc(100% - 25px);
     opacity: 0;
 }
 
 #custom-modal .switch input:checked ~ .switch__on {
-    right: calc(100% - 34px);
+    left: calc(100% - 25px);
     opacity: 1;
 }
 
