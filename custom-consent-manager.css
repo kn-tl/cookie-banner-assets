@@ -264,7 +264,6 @@
     transform: translate(0px, -20px);
     opacity: 0;
     animation: custom-slideInUp-center 350ms ease-out forwards;
-    box-shadow: -5px 5px 10px 0px #00000012, 0px 0px 50px 0px #0000001a;
     font-family: var(--fontFamily);
     color: var(--textColor);
     flex-direction: column;
