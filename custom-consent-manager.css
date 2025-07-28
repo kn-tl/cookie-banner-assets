@@ -280,6 +280,7 @@
     align-items: center;
     margin-bottom: 15px;
     gap: 16px;
+    background-color: transparent;
 }
 
 #custom-modal h1 {
