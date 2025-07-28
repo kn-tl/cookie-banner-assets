@@ -70,7 +70,7 @@
 #custom-wrapper #custom-modal button:focus,
 #custom-wrapper #custom-cookie-icon:focus {
     outline: none;
-    box-shadow: var(--focus);
+  /*  box-shadow: var(--focus); */
     border-radius: 5px;
 }
 
@@ -496,7 +496,7 @@
     border: none;
     background-color: var(--cookieIconColor);
     cursor: pointer;
-    box-shadow: 0px 0px 6px 0px #0000001a;
+   /* box-shadow: 0px 0px 6px 0px #0000001a; */
     pointer-events: auto;
     animation: custom-fadeIn 0.3s ease-in-out forwards;
 }
