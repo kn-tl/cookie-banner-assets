@@ -152,7 +152,7 @@ class CustomCookieBanner {
 	// Consent Management
 	// ----------------------------------------------------------------
 	setInitialCookieChoiceMade() {
-		localStorage.setItem(`consent_InitialChoice${this.getBannerSuffix()}`, "1");
+		localStorage.setItem(`consent_initialChoice${this.getBannerSuffix()}`, "1");
 	}
 
 	handleCookieChoice(accepted) {
@@ -317,7 +317,7 @@ class CustomCookieBanner {
 	}
 
 	hasSetInitialCookieChoices() {
-		return !!localStorage.getItem(`consent_InitialChoice${this.getBannerSuffix()}`);
+		return !!localStorage.getItem(`consent_initialChoice${this.getBannerSuffix()}`);
 	}
 
 	createBanner() {
