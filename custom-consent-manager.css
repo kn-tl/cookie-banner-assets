@@ -459,11 +459,15 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin-top: 15px;
+    margin-top: 20px;
+    padding-top: 20px;
     align-items: center;
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
     height: auto;
     min-height: auto;
+    border-top: 1px solid #E0E0E0;
 }
 
 @media (min-width: 600px) {
