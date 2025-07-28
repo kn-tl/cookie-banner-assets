@@ -274,14 +274,24 @@
 /* --------------------------------
   Modal - Header
 -------------------------------- */
-#custom-modal header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    gap: 16px;
+#custom-wrapper #custom-modal header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 15px !important;
+    gap: 16px !important;
     background-color: transparent !important;
+    background: none !important;
     box-shadow: none !important;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    height: auto !important;
+    left: auto !important;
+    position: relative !important;
+    top: auto !important;
+    width: auto !important;
+    z-index: auto !important;
 }
 
 #custom-modal h1 {
