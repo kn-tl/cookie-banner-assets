@@ -281,16 +281,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid #e0e0e0;
     gap: 16px;
 }
 
 #custom-modal h1 {
     font-family: var(--fontFamily);
     color: var(--textColor);
-    font-size: 24px;
-    font-weight: 500;
+    font-size: 28px;
+    font-weight: 600;
     margin: 0px;
+    line-height: 1.2;
 }
 
 #custom-modal .modal-close {
