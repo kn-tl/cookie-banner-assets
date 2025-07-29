@@ -141,48 +141,43 @@ function() {
 - **Cookie Name**: `consent`
 - **Decode URI**: ☑️
 
-### 3. Send to GA4
-```javascript
-// Example: Send consolidated consent data
-var consentData = JSON.parse({{consent}} || '{}');
-var consentInfo = consentData.consent;
-
-if (consentInfo) {
-  gtag('event', 'consent_given', {
-    'consent_status': consentInfo.consentStatus,
-    'consent_version': consentInfo.consentVersion,
-    'consent_date': consentInfo.consentDate,
-    'consent_host': consentInfo.consentHost,
-    'gtm_container_version': consentInfo.gtmContainerVersion,
-    'analytics_consent': consentInfo.consentCategories.analyticsPA,
-    'marketing_consent': consentInfo.consentCategories.marketingExtern
-  });
-}
-```
 
 ## Cookie Categories
+
+**Fully customizable** - Define your own categories in the GTM HTML tag:
 
 1. **Noodzakelijk** - Essential cookies (always enabled)
 2. **Persoonlijke analyses** - Analytics cookies  
 3. **Advertenties over vacatures buiten onze website** - Marketing cookies
 
-## API Usage
+### Customization
 
+The consent categories are **completely flexible** and defined in your GTM Custom HTML tag. You can:
+
+- **Add/remove categories** as needed
+- **Change category IDs** (e.g., `marketing`, `social`, `preferences`)
+- **Customize descriptions** for your specific use case
+- **Set different names** in any language
+
+**Example - Custom Categories:**
 ```javascript
-// Get full consent object
-var consentData = customCookieBannerManager.getConsolidatedConsent();
-// Returns: { consent: { ... } }
-
-// Get specific values
-var categories = customCookieBannerManager.getAcceptedCookies();
-// Returns: {necessary: true, analyticsPA: true, marketingExtern: false}
-
-var status = customCookieBannerManager.getConsentStatus(); // "partial"
-var version = customCookieBannerManager.getConsentVersion(); // "4.0"
-var date = customCookieBannerManager.getConsentDate(); // "20250729"
-var host = customCookieBannerManager.getConsentHost(); // "werk.ah.nl"
-var containerVersion = customCookieBannerManager.getGtmContainerVersion(); // "1194"
+cookieTypes: [
+  {
+    id: "marketingIntern",           // Different ID
+    name: "Advertenties over vacatures op onze eigen website", // Different name  
+    description: "<p>Custom marketing description...</p>",
+    required: false
+  },
+  {
+    id: "social",              // New category
+    name: "Social Media",      // New name
+    description: "<p>Social media integration cookies...</p>",
+    required: false
+  }
+]
 ```
+
+The banner automatically adapts to **any number of categories** you define. Each category gets its own toggle in the preferences modal and is stored in the consent cookie structure.
 
 ## Domain Configuration
 
