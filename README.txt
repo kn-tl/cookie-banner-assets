@@ -1,11 +1,10 @@
 # Custom Consent Banner
 
-A dynamic cookie consent banner for Ahold domains with automatic URL configuration and consent date tracking.
+A GDPR-compliant consent banner for Ahold websites, built for Google Tag Manager deployment.
 
 ## Quick Start
 
-Add this code as a **Custom HTML tag** in Google Tag Manager:
-
+1. **Add to GTM Custom HTML Tag:**
 ```html
 <link rel="stylesheet" href="https://kn-tl.github.io/cookie-banner-assets/custom-consent-manager.css">
 <script src="https://kn-tl.github.io/cookie-banner-assets/custom-consent-manager.js"></script>
@@ -16,7 +15,7 @@ function getDomainConfig() {
   var config = {
     cookieUrl: "/cookie-policy",
     privacyUrl: "/privacy-statement", 
-    consentVersion: "3.0"
+    consentVersion: "4.0"
   };
   
   switch (hostName) {
@@ -37,6 +36,7 @@ var config = getDomainConfig();
 customCookieBannerManager.updateCookieBannerConfig({
   consentVersion: config.consentVersion,
   consentDate: "{{CJS - Date - YYMMDD}}", // Replace with your GTM variable
+  gtmContainerVersion: "{{Container Version}}", // Replace with your GTM container version variable
   
   background: { showBackground: true },
   cookieIcon: { position: "bottomLeft" },
@@ -46,35 +46,30 @@ customCookieBannerManager.updateCookieBannerConfig({
     {
       id: "necessary",
       name: "Noodzakelijk",
-      description: "<p>Wij gebruiken altijd noodzakelijke cookies. Dit zijn cookies die zorgen dat de website goed functioneert en cookies over het gebruik van de website voor het genereren van geaggregeerde statistieken voor analysedoeleinden. Hierbij verwerken we minimale informatie voor een beperkte periode die niet direct herleidbaar is naar jou zodat we je privacy goed beschermen.</p>",
+      description: "<p>Wij gebruiken altijd noodzakelijke cookies...</p>",
       required: true
     },
     {
-      id: "analyticsPA",
+      id: "analyticsPA", 
       name: "Persoonlijke analyses",
-      description: "<p>We gebruiken analytische cookies waarmee informatie wordt verzameld over je gebruik van onze website. Deze inzichten helpen ons bij strategische en operationele keuzes en het verbeteren van onze diensten.</p>",
+      description: "<p>We gebruiken analytische cookies...</p>",
       required: false
     },
     {
       id: "marketingExtern",
-      name: "Advertenties over vacatures buiten onze website",
-      description: "<p>Wij en onze Partners gebruiken cookies en verzamelen daarmee gegevens over je klik- en zoekgedrag voor het leveren van persoonlijke aanbevelingen en advertenties onze website. Deze Partners zullen je persoonsgegevens verwerken voor eigen doeleinden. Hoe ze dat doen wordt beschreven in het privacy- en cookiebeleid van het desbetreffende bedrijf. In ons Cookiebeleid kan je lezen welke bedrijven dit zijn.</p>",
+      name: "Advertenties over vacatures buiten onze website", 
+      description: "<p>Wij en onze Partners gebruiken cookies...</p>",
       required: false
     }
   ],
   
   text: {
     banner: {
-      description: "<p>Wij gebruiken cookies (en vergelijkbare technieken) om onze website te verbeteren.</p>" +
-                   "<p>Daarnaast gebruiken wij en onze Partners cookies om je advertenties over vacatures te tonen buiten onze website. Met deze cookies verzamelen wij en onze Partners informatie over je klik- en zoekgedrag binnen onze website. Onze Partners verzamelen mogelijk ook informatie over je klik- en zoekgedrag buiten onze website. Hiermee kunnen we de website, onze aanbevelingen en advertenties over vacatures aanpassen aan je interesses.</p>" +
-                   "<p>Wanneer je op \"Accepteren\" klikt, geef je toestemming voor al onze cookies. Bij \"Weigeren\" worden alleen noodzakelijke cookies geplaatst. Wil je je voorkeuren zelf instellen? Kies dan voor \"Zelf instellen\".</p>" +
-                   "<p>Meer informatie lees je in ons <a href=\"" + config.cookieUrl + "\" target=\"_blank\">Cookiebeleid</a> en <a href=\"" + config.privacyUrl + "\" target=\"_blank\">Privacybeleid</a>.</p>",
+      description: "<p>Wij gebruiken cookies...</p>" +
+                   "<p>Meer informatie lees je in ons <a href=\"" + config.cookieUrl + "\" target=\"_blank\">Cookiebeleid</a>...</p>",
       acceptAllButtonText: "Accepteren",
-      acceptAllButtonAccessibleLabel: "Accept all cookies",
-      rejectNonEssentialButtonText: "Weigeren",
-      rejectNonEssentialButtonAccessibleLabel: "Reject non-essential",
-      preferencesButtonText: "Zelf instellen",
-      preferencesButtonAccessibleLabel: "Toggle preferences"
+      rejectNonEssentialButtonText: "Weigeren", 
+      preferencesButtonText: "Zelf instellen"
     },
     preferences: {
       title: "Kies je privacy voorkeuren"
@@ -84,125 +79,156 @@ customCookieBannerManager.updateCookieBannerConfig({
 </script>
 ```
 
-## How It Works
-
-- **Domain detection**: Automatic configuration based on hostname
-- **Default configuration**: Most Ahold domains use standard URLs
-- **Consent tracking**: Stores user preferences and date (YYYYMMDD format)  
-- **GTM compatible**: ES5 syntax for Google Tag Manager
-
-## Domain Configuration
-
-| Domain | Cookie URL | Privacy URL |
-|--------|------------|-------------|
-| werk.gall.nl | /privacy-cookie-statement | /privacy-cookie-statement |
-| werk.ah.nl | /cookie-policy | /privacy-statement |
-| werk.etos.nl | /cookie-policy | /privacy-statement |
-| Other domains | /cookie-policy | /privacy-statement |
-
 ## Stored Data
 
-The banner creates 6 localStorage items:
+All consent data is stored in **one consolidated 1st-party cookie** (`consent`) containing a JSON structure:
 
-| Key | Purpose | Example |
-|-----|---------|---------|
-| `consent_necessary` | Necessary cookies consent | `"true"` |
-| `consent_analyticsPA` | Analytics consent | `"true"` |
-| `consent_marketingExtern` | Marketing consent | `"false"` |
-| `consent_initialChoice` | User has made choice | `"1"` |
-| `consent_version` | Policy version | `"3.0"` |
-| `consent_date` | Consent date | `"20250725"` |
+### Cookie Structure: `consent`
+```json
+{
+  "consent": {
+    "consentDate": "20250729",
+    "consentVersion": "4.0", 
+    "consentStatus": "partial",
+    "consentCategories": {
+      "necessary": true,
+      "analyticsPA": true,
+      "marketingExtern": false
+    },
+    "consentHost": "werk.ah.nl",
+    "gtmContainerVersion": "1194"
+  }
+}
+```
 
-## Cookie Categories
+### Consent Status Values:
+- **`"accepted"`**: All optional categories are true
+- **`"denied"`**: All optional categories are false  
+- **`"partial"`**: At least one optional category is true
 
-1. **Noodzakelijk** (`necessary`) - Always required, website functionality
-2. **Persoonlijke analyses** (`analyticsPA`) - Optional, website analytics  
-3. **Advertenties over vacatures buiten onze website** (`marketingExtern`) - Optional, external job ads
+## GTM Integration
 
-## GTM Date Variable
+### 1. Create Required GTM Variables
 
-Create a custom JavaScript variable in GTM:
-
+**Date Variable:**
+- **Variable Type**: Custom JavaScript
+- **Variable Name**: `CJS - Date - YYMMDD`
+- **Code**:
 ```javascript
 function() {
-  var now = new Date();
-  var year = now.getFullYear();
-  var month = String(now.getMonth() + 1).padStart(2, '0');
-  var day = String(now.getDate()).padStart(2, '0');
+  var today = new Date();
+  var year = today.getFullYear();
+  var month = String(today.getMonth() + 1).padStart(2, '0');
+  var day = String(today.getDate()).padStart(2, '0');
   return year + month + day;
 }
 ```
 
+**Container Version Variable:**
+- **Variable Type**: Custom JavaScript  
+- **Variable Name**: `Container Version`
+- **Code**:
+```javascript
+function() {
+  return {{Container Version Number}};
+}
+```
+
+### 2. Read Consent Data in GTM
+
+**Option A: Full Consent Object**
+- **Variable Type**: 1st Party Cookie
+- **Cookie Name**: `consent`
+- **Decode URI**: ☑️
+
+**Option B: Specific Values via Custom JavaScript**
+```javascript
+function() {
+  var consentCookie = {{consent}};
+  if (consentCookie) {
+    try {
+      var data = JSON.parse(consentCookie);
+      return data.consent.consentStatus; // or any other property
+    } catch(e) {
+      return null;
+    }
+  }
+  return null;
+}
+```
+
+### 3. Send to GA4
+```javascript
+// Example: Send consolidated consent data
+var consentData = JSON.parse({{consent}} || '{}');
+var consentInfo = consentData.consent;
+
+if (consentInfo) {
+  gtag('event', 'consent_given', {
+    'consent_status': consentInfo.consentStatus,
+    'consent_version': consentInfo.consentVersion,
+    'consent_date': consentInfo.consentDate,
+    'consent_host': consentInfo.consentHost,
+    'gtm_container_version': consentInfo.gtmContainerVersion,
+    'analytics_consent': consentInfo.consentCategories.analyticsPA,
+    'marketing_consent': consentInfo.consentCategories.marketingExtern
+  });
+}
+```
+
+## Cookie Categories
+
+1. **Noodzakelijk** - Essential cookies (always enabled)
+2. **Persoonlijke analyses** - Analytics cookies  
+3. **Advertenties over vacatures buiten onze website** - Marketing cookies
+
 ## API Usage
 
 ```javascript
-// Get consent status
-var accepted = customCookieBannerManager.getAcceptedCookies();
-console.log(accepted.analyticsPA); // true/false
+// Get full consent object
+var consentData = customCookieBannerManager.getConsolidatedConsent();
+// Returns: { consent: { ... } }
 
-// Get metadata
-var version = customCookieBannerManager.getConsentVersion(); // "3.0"
-var date = customCookieBannerManager.getConsentDate(); // "20250725"
+// Get specific values
+var categories = customCookieBannerManager.getAcceptedCookies();
+// Returns: {necessary: true, analyticsPA: true, marketingExtern: false}
 
-// Conditional loading
-if (accepted.analyticsPA) {
-  // Load Google Analytics
-}
-
-if (accepted.marketingExtern) {
-  // Load marketing pixels
-}
+var status = customCookieBannerManager.getConsentStatus(); // "partial"
+var version = customCookieBannerManager.getConsentVersion(); // "4.0"
+var date = customCookieBannerManager.getConsentDate(); // "20250729"
+var host = customCookieBannerManager.getConsentHost(); // "werk.ah.nl"
+var containerVersion = customCookieBannerManager.getGtmContainerVersion(); // "1194"
 ```
 
-## Customization
+## Domain Configuration
 
-### Add New Domain
-```javascript
-case "new-domain.com":
-  config.cookieUrl = "/your-cookie-url";
-  config.privacyUrl = "/your-privacy-url";
-  break;
-```
-
-### Change Position
-```javascript
-position: { banner: "top" } // Options: "center", "top", "bottom"
-cookieIcon: { position: "bottomRight" } // Options: "bottomLeft", "bottomRight"
-```
-
-### Modify Text
-Update the `text.banner.description` and category descriptions as needed.
-
-## For Other Domains
-
-To use on non-Ahold domains, simplify the configuration:
-
-```javascript
-function getDomainConfig() {
-  return {
-    cookieUrl: "/cookie-policy",
-    privacyUrl: "/privacy-statement",
-    consentVersion: "3.0"
-  };
-}
-```
-
-## Troubleshooting
-
-**Banner not showing?** 
-- Clear localStorage: `localStorage.clear()`
-- Check console for errors
-- Verify GTM tag is published
-
-**Wrong URLs?** 
-- Check domain in switch statement
-- Verify URL paths exist on website
+The banner automatically configures URLs based on the current domain:
+- **werk.gall.nl**: Uses `/privacy-cookie-statement` for both links
+- **werk.ah.nl & werk.etos.nl**: Uses default `/cookie-policy` and `/privacy-statement`
 
 ## Files
 
-- `custom-consent-manager.js` - Main functionality  
-- `custom-consent-manager.css` - Styling
+| File | Description |
+|------|-------------|
+| `custom-consent-manager.js` | Core functionality |
+| `custom-consent-manager.css` | Styling |
+| `README.md` | This documentation |
+
+## Troubleshooting
+
+**Banner not showing?**
+- Check browser console for JavaScript errors
+- Verify GTM date variable syntax
+- Test on a fresh browser/incognito mode
+
+**Cookie not saving?**
+- Check if the domain allows 1st-party cookies
+- Verify no Content Security Policy blocks the banner
+- Check browser developer tools → Application → Cookies for `consent`
+
+**Invalid JSON in cookie?**
+- Clear the `consent` cookie and test again
+- Check browser console for parsing errors
 
 ---
-
-**Note**: This banner is based on Silktide Consent Manager with customizations for Ahold domains and consent date tracking. 
+*Based on Silktide Consent Manager - Modified for Ahold use cases* 
