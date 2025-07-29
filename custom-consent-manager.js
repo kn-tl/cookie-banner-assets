@@ -156,9 +156,9 @@ class CustomCookieBanner {
 		const currentState = checkbox.checked;
 
 		if (cookieType.required) {
-			this.setCookieConsent(cookieId, true);
+			this.setTemporaryConsent(cookieId, true);
 		} else {
-			this.setCookieConsent(cookieId, currentState);
+			this.setTemporaryConsent(cookieId, currentState);
 			this.runCookieCallback(cookieType, currentState);
 		}
 	}
@@ -177,12 +177,12 @@ class CustomCookieBanner {
 	// Consent Management
 	// ----------------------------------------------------------------
 	setInitialCookieChoiceMade() {
-		this.setCookie(`consent_initialChoice${this.getBannerSuffix()}`, "1");
+		// This will be handled in the consolidated consent data
+		this.saveConsolidatedConsent();
 	}
 
 	handleCookieChoice(accepted) {
-		this.setInitialCookieChoiceMade();
-		this.saveConsentVersion();
+		this.saveConsolidatedConsent();
 		this.hideBannerAndShowIcon();
 		this.saveAllCookieChoices(accepted);
 		this.runGlobalCallbacks(accepted);
@@ -190,14 +190,91 @@ class CustomCookieBanner {
 	}
 
 	saveConsentVersion() {
-		if (this.config.consentVersion) {
-			this.setCookie(`consent_version${this.getBannerSuffix()}`, this.config.consentVersion);
+		// Legacy method - now handled by saveConsolidatedConsent
+		this.saveConsolidatedConsent();
+	}
+
+	saveConsolidatedConsent() {
+		const consentCategories = this.getConsentCategories();
+		const consentStatus = this.determineConsentStatus(consentCategories);
+		
+		const consentData = {
+			consentBeta: {
+				consentDate: this.config.consentDate || this.getCurrentDate(),
+				consentVersion: this.config.consentVersion || "3.0",
+				consentStatus: consentStatus,
+				consentCategories: consentCategories,
+				consentHost: window.location.hostname,
+				gtmContainerVersion: this.config.gtmContainerVersion || ""
+			}
+		};
+		
+		this.setCookie(`consent_data${this.getBannerSuffix()}`, JSON.stringify(consentData), 365);
+	}
+
+	getConsentCategories() {
+		const categories = { necessary: true }; // Always true
+		
+		if (this.config.cookieTypes) {
+			this.config.cookieTypes.forEach(type => {
+				if (type.id !== 'necessary') {
+					// Get current consent state from temporary storage or default
+					categories[type.id] = this.getTemporaryConsent(type.id) || false;
+				}
+			});
 		}
 		
-		// Save consent date if provided in config
-		if (this.config.consentDate) {
-			this.setCookie(`consent_date${this.getBannerSuffix()}`, this.config.consentDate);
+		return categories;
+	}
+
+	determineConsentStatus(categories) {
+		const optionalCategories = Object.keys(categories).filter(key => key !== 'necessary');
+		const acceptedOptional = optionalCategories.filter(key => categories[key] === true);
+		
+		if (acceptedOptional.length === 0) {
+			return "denied";
+		} else if (acceptedOptional.length === optionalCategories.length) {
+			return "accepted";
+		} else {
+			return "partial";
 		}
+	}
+
+	getCurrentDate() {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = String(today.getMonth() + 1).padStart(2, '0');
+		const day = String(today.getDate()).padStart(2, '0');
+		return year + month + day;
+	}
+
+	// Temporary consent storage for building the final consent object
+	setTemporaryConsent(cookieId, value) {
+		this._temporaryConsent = this._temporaryConsent || {};
+		this._temporaryConsent[cookieId] = value;
+	}
+
+	getTemporaryConsent(cookieId) {
+		if (this._temporaryConsent && this._temporaryConsent[cookieId] !== undefined) {
+			return this._temporaryConsent[cookieId];
+		}
+		
+		// Fallback to existing consent data
+		const existingData = this.getConsolidatedConsent();
+		return existingData?.consentBeta?.consentCategories?.[cookieId] || false;
+	}
+
+	getConsolidatedConsent() {
+		const cookieValue = this.getCookie(`consent_data${this.getBannerSuffix()}`);
+		if (cookieValue) {
+			try {
+				return JSON.parse(cookieValue);
+			} catch (e) {
+				console.warn('Failed to parse consent data:', e);
+				return null;
+			}
+		}
+		return null;
 	}
 
 	hideBannerAndShowIcon() {
@@ -210,13 +287,16 @@ class CustomCookieBanner {
 	saveAllCookieChoices(accepted) {
 		this.config.cookieTypes?.forEach(type => {
 			if (type.required) {
-				this.setCookieConsent(type.id, true);
+				this.setTemporaryConsent(type.id, true);
 				this.runCookieCallback(type, true);
 			} else {
-				this.setCookieConsent(type.id, accepted);
+				this.setTemporaryConsent(type.id, accepted);
 				this.runCookieCallback(type, accepted);
 			}
 		});
+		
+		// Save the consolidated consent after setting all temporary values
+		this.saveConsolidatedConsent();
 	}
 
 	runGlobalCallbacks(accepted) {
@@ -236,18 +316,41 @@ class CustomCookieBanner {
 	}
 
 	getAcceptedCookies() {
+		const consentData = this.getConsolidatedConsent();
+		if (consentData?.consentBeta?.consentCategories) {
+			return consentData.consentBeta.consentCategories;
+		}
+		
+		// Fallback for backwards compatibility
 		return this.config.cookieTypes?.reduce((acc, cookieType) => {
-			acc[cookieType.id] = this.getCookieConsent(cookieType.id);
+			acc[cookieType.id] = cookieType.id === 'necessary' ? true : false;
 			return acc;
 		}, {}) ?? {};
 	}
 
 	getConsentVersion() {
-		return this.getCookie(`consent_version${this.getBannerSuffix()}`);
+		const consentData = this.getConsolidatedConsent();
+		return consentData?.consentBeta?.consentVersion || null;
 	}
 
 	getConsentDate() {
-		return this.getCookie(`consent_date${this.getBannerSuffix()}`);
+		const consentData = this.getConsolidatedConsent();
+		return consentData?.consentBeta?.consentDate || null;
+	}
+
+	getConsentStatus() {
+		const consentData = this.getConsolidatedConsent();
+		return consentData?.consentBeta?.consentStatus || null;
+	}
+
+	getConsentHost() {
+		const consentData = this.getConsolidatedConsent();
+		return consentData?.consentBeta?.consentHost || null;
+	}
+
+	getGtmContainerVersion() {
+		const consentData = this.getConsolidatedConsent();
+		return consentData?.consentBeta?.gtmContainerVersion || null;
 	}
 
 	// ----------------------------------------------------------------
@@ -342,7 +445,8 @@ class CustomCookieBanner {
 	}
 
 	hasSetInitialCookieChoices() {
-		return !!this.getCookie(`consent_initialChoice${this.getBannerSuffix()}`);
+		const consentData = this.getConsolidatedConsent();
+		return !!consentData?.consentBeta;
 	}
 
 	createBanner() {
@@ -526,13 +630,12 @@ class CustomCookieBanner {
 			const cookieType = this.config.cookieTypes?.find(type => type.id === cookieId);
 
 			if (cookieType) {
-				this.setCookieConsent(cookieId, isAccepted);
+				this.setTemporaryConsent(cookieId, isAccepted);
 				this.runCookieCallback(cookieType, isAccepted);
 			}
 		});
 
-		this.setInitialCookieChoiceMade();
-		this.saveConsentVersion();
+		this.saveConsolidatedConsent();
 	}
 
 	// ----------------------------------------------------------------
@@ -705,11 +808,17 @@ class CustomCookieBanner {
 	}
 
 	setCookieConsent(cookieId, value) {
-		this.setCookie(`consent_${cookieId}${this.getBannerSuffix()}`, value.toString());
+		this.setTemporaryConsent(cookieId, value);
 	}
 
 	getCookieConsent(cookieId) {
-		return this.getCookie(`consent_${cookieId}${this.getBannerSuffix()}`) === "true";
+		const consentData = this.getConsolidatedConsent();
+		if (consentData?.consentBeta?.consentCategories) {
+			return consentData.consentBeta.consentCategories[cookieId] === true;
+		}
+		
+		// Fallback
+		return cookieId === 'necessary' ? true : false;
 	}
 
 	preventBodyScroll() {
@@ -781,6 +890,14 @@ class CustomCookieBanner {
 		cookieBanner?.getConsentVersion() ?? null;
 	window.customCookieBannerManager.getConsentDate = () => 
 		cookieBanner?.getConsentDate() ?? null;
+	window.customCookieBannerManager.getConsentStatus = () => 
+		cookieBanner?.getConsentStatus() ?? null;
+	window.customCookieBannerManager.getConsentHost = () => 
+		cookieBanner?.getConsentHost() ?? null;
+	window.customCookieBannerManager.getGtmContainerVersion = () => 
+		cookieBanner?.getGtmContainerVersion() ?? null;
+	window.customCookieBannerManager.getConsolidatedConsent = () => 
+		cookieBanner?.getConsolidatedConsent() ?? null;
 
 	// Initialize on DOM ready
 	if (document.readyState === "loading") {
