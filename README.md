@@ -125,14 +125,9 @@ function() {
 ```
 
 **Container Version Variable:**
-- **Variable Type**: Custom JavaScript  
+- **Variable Type**: Built-in variable  
 - **Variable Name**: `Container Version`
-- **Code**:
-```javascript
-function() {
-  return {{Container Version Number}};
-}
-```
+
 
 ### 2. Read Consent Data in GTM
 
