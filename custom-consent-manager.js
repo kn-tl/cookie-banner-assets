@@ -199,7 +199,7 @@ class CustomCookieBanner {
 		const consentStatus = this.determineConsentStatus(consentCategories);
 		
 		const consentData = {
-			consentBeta: {
+			consent: {
 				consentDate: this.config.consentDate || this.getCurrentDate(),
 				consentVersion: this.config.consentVersion || "3.0",
 				consentStatus: consentStatus,
@@ -209,7 +209,7 @@ class CustomCookieBanner {
 			}
 		};
 		
-		this.setCookie(`consent_data${this.getBannerSuffix()}`, JSON.stringify(consentData), 365);
+		this.setCookie(`consent${this.getBannerSuffix()}`, JSON.stringify(consentData), 365);
 	}
 
 	getConsentCategories() {
@@ -261,11 +261,11 @@ class CustomCookieBanner {
 		
 		// Fallback to existing consent data
 		const existingData = this.getConsolidatedConsent();
-		return existingData?.consentBeta?.consentCategories?.[cookieId] || false;
+		return existingData?.consent?.consentCategories?.[cookieId] || false;
 	}
 
 	getConsolidatedConsent() {
-		const cookieValue = this.getCookie(`consent_data${this.getBannerSuffix()}`);
+		const cookieValue = this.getCookie(`consent${this.getBannerSuffix()}`);
 		if (cookieValue) {
 			try {
 				return JSON.parse(cookieValue);
@@ -317,8 +317,8 @@ class CustomCookieBanner {
 
 	getAcceptedCookies() {
 		const consentData = this.getConsolidatedConsent();
-		if (consentData?.consentBeta?.consentCategories) {
-			return consentData.consentBeta.consentCategories;
+		if (consentData?.consent?.consentCategories) {
+			return consentData.consent.consentCategories;
 		}
 		
 		// Fallback for backwards compatibility
@@ -330,27 +330,27 @@ class CustomCookieBanner {
 
 	getConsentVersion() {
 		const consentData = this.getConsolidatedConsent();
-		return consentData?.consentBeta?.consentVersion || null;
+		return consentData?.consent?.consentVersion || null;
 	}
 
 	getConsentDate() {
 		const consentData = this.getConsolidatedConsent();
-		return consentData?.consentBeta?.consentDate || null;
+		return consentData?.consent?.consentDate || null;
 	}
 
 	getConsentStatus() {
 		const consentData = this.getConsolidatedConsent();
-		return consentData?.consentBeta?.consentStatus || null;
+		return consentData?.consent?.consentStatus || null;
 	}
 
 	getConsentHost() {
 		const consentData = this.getConsolidatedConsent();
-		return consentData?.consentBeta?.consentHost || null;
+		return consentData?.consent?.consentHost || null;
 	}
 
 	getGtmContainerVersion() {
 		const consentData = this.getConsolidatedConsent();
-		return consentData?.consentBeta?.gtmContainerVersion || null;
+		return consentData?.consent?.gtmContainerVersion || null;
 	}
 
 	// ----------------------------------------------------------------
@@ -446,7 +446,7 @@ class CustomCookieBanner {
 
 	hasSetInitialCookieChoices() {
 		const consentData = this.getConsolidatedConsent();
-		return !!consentData?.consentBeta;
+		return !!consentData?.consent;
 	}
 
 	createBanner() {
@@ -813,8 +813,8 @@ class CustomCookieBanner {
 
 	getCookieConsent(cookieId) {
 		const consentData = this.getConsolidatedConsent();
-		if (consentData?.consentBeta?.consentCategories) {
-			return consentData.consentBeta.consentCategories[cookieId] === true;
+		if (consentData?.consent?.consentCategories) {
+			return consentData.consent.consentCategories[cookieId] === true;
 		}
 		
 		// Fallback
