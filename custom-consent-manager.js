@@ -16,6 +16,31 @@ class CustomCookieBanner {
 	}
 
 	// ----------------------------------------------------------------
+	// Cookie Helper Functions
+	// ----------------------------------------------------------------
+	setCookie(name, value, days = 365) {
+		const expires = new Date();
+		expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+		const expiresString = expires.toUTCString();
+		document.cookie = `${name}=${value}; expires=${expiresString}; path=/; SameSite=Lax`;
+	}
+
+	getCookie(name) {
+		const nameEQ = name + "=";
+		const ca = document.cookie.split(';');
+		for (let i = 0; i < ca.length; i++) {
+			let c = ca[i];
+			while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
+	}
+
+	deleteCookie(name) {
+		document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+	}
+
+	// ----------------------------------------------------------------
 	// Initialization
 	// ----------------------------------------------------------------
 	initializeBanner() {
@@ -152,7 +177,7 @@ class CustomCookieBanner {
 	// Consent Management
 	// ----------------------------------------------------------------
 	setInitialCookieChoiceMade() {
-		localStorage.setItem(`consent_initialChoice${this.getBannerSuffix()}`, "1");
+		this.setCookie(`consent_initialChoice${this.getBannerSuffix()}`, "1");
 	}
 
 	handleCookieChoice(accepted) {
@@ -166,12 +191,12 @@ class CustomCookieBanner {
 
 	saveConsentVersion() {
 		if (this.config.consentVersion) {
-			localStorage.setItem(`consent_version${this.getBannerSuffix()}`, this.config.consentVersion);
+			this.setCookie(`consent_version${this.getBannerSuffix()}`, this.config.consentVersion);
 		}
 		
 		// Save consent date if provided in config
 		if (this.config.consentDate) {
-			localStorage.setItem(`consent_date${this.getBannerSuffix()}`, this.config.consentDate);
+			this.setCookie(`consent_date${this.getBannerSuffix()}`, this.config.consentDate);
 		}
 	}
 
@@ -218,11 +243,11 @@ class CustomCookieBanner {
 	}
 
 	getConsentVersion() {
-		return localStorage.getItem(`consent_version${this.getBannerSuffix()}`);
+		return this.getCookie(`consent_version${this.getBannerSuffix()}`);
 	}
 
 	getConsentDate() {
-		return localStorage.getItem(`consent_date${this.getBannerSuffix()}`);
+		return this.getCookie(`consent_date${this.getBannerSuffix()}`);
 	}
 
 	// ----------------------------------------------------------------
@@ -317,7 +342,7 @@ class CustomCookieBanner {
 	}
 
 	hasSetInitialCookieChoices() {
-		return !!localStorage.getItem(`consent_initialChoice${this.getBannerSuffix()}`);
+		return !!this.getCookie(`consent_initialChoice${this.getBannerSuffix()}`);
 	}
 
 	createBanner() {
@@ -680,11 +705,11 @@ class CustomCookieBanner {
 	}
 
 	setCookieConsent(cookieId, value) {
-		localStorage.setItem(`consent_${cookieId}${this.getBannerSuffix()}`, value.toString());
+		this.setCookie(`consent_${cookieId}${this.getBannerSuffix()}`, value.toString());
 	}
 
 	getCookieConsent(cookieId) {
-		return localStorage.getItem(`consent_${cookieId}${this.getBannerSuffix()}`) === "true";
+		return this.getCookie(`consent_${cookieId}${this.getBannerSuffix()}`) === "true";
 	}
 
 	preventBodyScroll() {
