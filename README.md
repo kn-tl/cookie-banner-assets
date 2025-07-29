@@ -136,26 +136,10 @@ function() {
 
 ### 2. Read Consent Data in GTM
 
-**Option A: Full Consent Object**
+**Full Consent Object:**
 - **Variable Type**: 1st Party Cookie
 - **Cookie Name**: `consent`
 - **Decode URI**: ☑️
-
-**Option B: Specific Values via Custom JavaScript**
-```javascript
-function() {
-  var consentCookie = {{consent}};
-  if (consentCookie) {
-    try {
-      var data = JSON.parse(consentCookie);
-      return data.consent.consentStatus; // or any other property
-    } catch(e) {
-      return null;
-    }
-  }
-  return null;
-}
-```
 
 ### 3. Send to GA4
 ```javascript
