@@ -751,12 +751,23 @@ class CustomCookieBanner {
 
 		acceptAllButton?.addEventListener("click", () => {
 			this.handleCookieChoice(true);
+			this.toggleModal(false);
+			this.hideBackdrop();
+			this.showCookieIcon();
 		});
 
-		rejectAllButton?.addEventListener("click", () => this.handleCookieChoice(false));
+		rejectAllButton?.addEventListener("click", () => {
+			this.handleCookieChoice(false);
+			this.toggleModal(false);
+			this.hideBackdrop();
+			this.showCookieIcon();
+		});
 
 		confirmButton?.addEventListener("click", () => {
 			this.saveCurrentCheckboxStates();
+			this.toggleModal(false);
+			this.hideBackdrop();
+			this.showCookieIcon();
 		});
 
 		this.setupFocusTrap(this.elements.modal);
