@@ -196,7 +196,7 @@ The banner automatically adapts to **any number of categories** you define. Each
 
 The banner automatically configures URLs based on the current domain:
 - **werk.gall.nl**: Uses `/privacy-cookie-statement` for both links
-- **werk.ah.nl & werk.etos.nl**: Uses default `/cookie-policy` and `/privacy-statement`
+- **werk.ah.nl, werk.etos.nl & jobs.albertheijn.be**: Uses default `/cookie-policy` and `/privacy-statement`
 
 ## Files
 
