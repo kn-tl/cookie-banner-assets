@@ -128,13 +128,31 @@ function() {
 - **Variable Type**: Built-in variable  
 - **Variable Name**: `Container Version`
 
+### 2. DataLayer Events
 
-### 2. Read Consent Data in GTM
+The banner automatically pushes events to `window.dataLayer` for GTM tracking:
+
+**`consentInitialized` Event**
+- **When**: Page loads with existing consent
+- **Use**: Tags that should fire on every page (e.g., GA4 pageview)
+- **Data**: Full consent object
+
+**`consentUpdate` Event** 
+- **When**: User makes a consent choice (accept/reject/confirm preferences)
+- **Use**: Tags that should fire immediately after consent (e.g., marketing pixels)
+- **Data**: Full consent object
+
+### 3. Read Consent Data in GTM
 
 **Full Consent Object:**
 - **Variable Type**: 1st Party Cookie
 - **Cookie Name**: `consent`
 - **Decode URI**: ☑️
+
+**Event Data:**
+- **Variable Type**: Data Layer Variable
+- **Variable Name**: `consent`
+- **Data Layer Variable Name**: `consent`
 
 
 ## Cookie Categories
