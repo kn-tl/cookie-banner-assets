@@ -41,6 +41,36 @@ class CustomCookieBanner {
 	}
 
 	// ----------------------------------------------------------------
+	// DataLayer Events for GTM
+	// ----------------------------------------------------------------
+	pushDataLayerEvent(eventName, eventData = {}) {
+		if (typeof window.dataLayer !== 'undefined') {
+			window.dataLayer.push({
+				event: eventName,
+				...eventData
+			});
+		}
+	}
+
+	pushConsentInitializedEvent() {
+		const consentData = this.getConsolidatedConsent();
+		if (consentData) {
+			this.pushDataLayerEvent('consentInitialized', {
+				consent: consentData.consent
+			});
+		}
+	}
+
+	pushConsentUpdateEvent() {
+		const consentData = this.getConsolidatedConsent();
+		if (consentData) {
+			this.pushDataLayerEvent('consentUpdate', {
+				consent: consentData.consent
+			});
+		}
+	}
+
+	// ----------------------------------------------------------------
 	// Initialization
 	// ----------------------------------------------------------------
 	initializeBanner() {
@@ -65,6 +95,8 @@ class CustomCookieBanner {
 		if (this.hasSetInitialCookieChoices()) {
 			this.loadRequiredCookies();
 			this.runAcceptedCookieCallbacks();
+			// Push consentInitialized event when consent already exists
+			this.pushConsentInitializedEvent();
 		}
 	}
 
@@ -187,6 +219,8 @@ class CustomCookieBanner {
 		this.saveAllCookieChoices(accepted);
 		this.runGlobalCallbacks(accepted);
 		this.updateCheckboxState();
+		// Push consentUpdate event when user makes a choice
+		this.pushConsentUpdateEvent();
 	}
 
 	saveConsentVersion() {
@@ -220,7 +254,7 @@ class CustomCookieBanner {
 				if (type.id !== 'necessary') {
 					// Get current consent state from temporary storage or default
 					categories[type.id] = this.getTemporaryConsent(type.id) || false;
-				}
+		}
 			});
 		}
 		
@@ -473,7 +507,6 @@ class CustomCookieBanner {
 
 		acceptButton?.addEventListener("click", () => {
 			this.handleCookieChoice(true);
-			window.location.reload();
 		});
 
 		rejectButton?.addEventListener("click", () => this.handleCookieChoice(false));
@@ -636,6 +669,8 @@ class CustomCookieBanner {
 		});
 
 		this.saveConsolidatedConsent();
+		// Push consentUpdate event when user confirms preferences
+		this.pushConsentUpdateEvent();
 	}
 
 	// ----------------------------------------------------------------
@@ -716,14 +751,12 @@ class CustomCookieBanner {
 
 		acceptAllButton?.addEventListener("click", () => {
 			this.handleCookieChoice(true);
-			window.location.reload();
 		});
 
 		rejectAllButton?.addEventListener("click", () => this.handleCookieChoice(false));
 
 		confirmButton?.addEventListener("click", () => {
 			this.saveCurrentCheckboxStates();
-			window.location.reload();
 		});
 
 		this.setupFocusTrap(this.elements.modal);
