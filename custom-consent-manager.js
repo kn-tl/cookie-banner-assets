@@ -542,7 +542,7 @@ class CustomCookieBanner {
 			description = "<p></p>"
 		} = this.config.text?.preferences ?? {};
 
-		const backButton = this.createBackButton();
+		const closeButton = this.createCloseButton();
 		const cookieTypes = this.config.cookieTypes ?? [];
 		const acceptedCookieMap = this.getAcceptedCookies();
 
@@ -551,7 +551,7 @@ class CustomCookieBanner {
 		return `
 			<div class="modal-header">
 				<h1>${title}</h1>
-				${backButton}
+				${closeButton}
 			</div>
 			${description}
 			<section id="cookie-preferences">
@@ -565,7 +565,7 @@ class CustomCookieBanner {
 		`;
 	}
 
-	createBackButton() {
+	createCloseButton() {
 		return `
 			<button class="modal-close" aria-label="Terug naar banner">
 				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -626,8 +626,8 @@ class CustomCookieBanner {
 		this.removeBanner();
 		this.preventBodyScroll();
 
-		const backButton = this.elements.modal.querySelector(".modal-close");
-		backButton?.focus();
+		const modalCloseButton = this.elements.modal.querySelector(".modal-close");
+		modalCloseButton?.focus();
 
 		this.config.onPreferencesOpen?.();
 		this.updateCheckboxState(false);
@@ -738,14 +738,12 @@ class CustomCookieBanner {
 	}
 
 	setupModalEventListeners() {
-		if (!this.elements.modal) return;
-		
-		const backButton = this.elements.modal.querySelector(".modal-close");
+		const closeButton = this.elements.modal.querySelector(".modal-close");
 		const acceptAllButton = this.elements.modal.querySelector(".preferences-accept-all");
 		const rejectAllButton = this.elements.modal.querySelector(".preferences-reject-all");
 		const confirmButton = this.elements.modal.querySelector(".preferences-confirm");
 
-		backButton?.addEventListener("click", () => {
+		closeButton?.addEventListener("click", () => {
 			this.hideModalWithoutSaving();
 			this.createBannerWithEventListeners();
 			this.showBackdrop();
@@ -775,12 +773,10 @@ class CustomCookieBanner {
 		this.setupFocusTrap(this.elements.modal);
 		this.setupModalKeyboardEvents();
 		this.setupCheckboxEventListeners();
-		// Focus will be set in showModal() when modal is actually created
+		closeButton?.focus();
 	}
 
 	setupModalKeyboardEvents() {
-		if (!this.elements.modal) return;
-		
 		this.elements.modal.addEventListener("keydown", (e) => {
 			if (e.key === "Escape") {
 				this.toggleModal(false);
@@ -789,8 +785,6 @@ class CustomCookieBanner {
 	}
 
 	setupCheckboxEventListeners() {
-		if (!this.elements.modal) return;
-		
 		const preferencesSection = this.elements.modal.querySelector("#cookie-preferences");
 		const checkboxes = preferencesSection?.querySelectorAll('input[type="checkbox"]');
 
