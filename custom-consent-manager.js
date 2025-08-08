@@ -738,6 +738,8 @@ class CustomCookieBanner {
 	}
 
 	setupModalEventListeners() {
+		if (!this.elements.modal) return;
+		
 		const backButton = this.elements.modal.querySelector(".modal-close");
 		const acceptAllButton = this.elements.modal.querySelector(".preferences-accept-all");
 		const rejectAllButton = this.elements.modal.querySelector(".preferences-reject-all");
@@ -777,6 +779,8 @@ class CustomCookieBanner {
 	}
 
 	setupModalKeyboardEvents() {
+		if (!this.elements.modal) return;
+		
 		this.elements.modal.addEventListener("keydown", (e) => {
 			if (e.key === "Escape") {
 				this.toggleModal(false);
@@ -785,6 +789,8 @@ class CustomCookieBanner {
 	}
 
 	setupCheckboxEventListeners() {
+		if (!this.elements.modal) return;
+		
 		const preferencesSection = this.elements.modal.querySelector("#cookie-preferences");
 		const checkboxes = preferencesSection?.querySelectorAll('input[type="checkbox"]');
 
