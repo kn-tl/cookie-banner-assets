@@ -773,7 +773,7 @@ class CustomCookieBanner {
 		this.setupFocusTrap(this.elements.modal);
 		this.setupModalKeyboardEvents();
 		this.setupCheckboxEventListeners();
-		backButton?.focus();
+		// Focus will be set in showModal() when modal is actually created
 	}
 
 	setupModalKeyboardEvents() {
