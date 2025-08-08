@@ -542,7 +542,7 @@ class CustomCookieBanner {
 			description = "<p></p>"
 		} = this.config.text?.preferences ?? {};
 
-		const closeButton = this.createCloseButton();
+		const backButton = this.createBackButton();
 		const cookieTypes = this.config.cookieTypes ?? [];
 		const acceptedCookieMap = this.getAcceptedCookies();
 
@@ -551,7 +551,7 @@ class CustomCookieBanner {
 		return `
 			<div class="modal-header">
 				<h1>${title}</h1>
-				${closeButton}
+				${backButton}
 			</div>
 			${description}
 			<section id="cookie-preferences">
@@ -565,7 +565,7 @@ class CustomCookieBanner {
 		`;
 	}
 
-	createCloseButton() {
+	createBackButton() {
 		return `
 			<button class="modal-close" aria-label="Terug naar banner">
 				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -626,8 +626,8 @@ class CustomCookieBanner {
 		this.removeBanner();
 		this.preventBodyScroll();
 
-		const modalCloseButton = this.elements.modal.querySelector(".modal-close");
-		modalCloseButton?.focus();
+		const backButton = this.elements.modal.querySelector(".modal-close");
+		backButton?.focus();
 
 		this.config.onPreferencesOpen?.();
 		this.updateCheckboxState(false);
@@ -738,12 +738,12 @@ class CustomCookieBanner {
 	}
 
 	setupModalEventListeners() {
-		const closeButton = this.elements.modal.querySelector(".modal-close");
+		const backButton = this.elements.modal.querySelector(".modal-close");
 		const acceptAllButton = this.elements.modal.querySelector(".preferences-accept-all");
 		const rejectAllButton = this.elements.modal.querySelector(".preferences-reject-all");
 		const confirmButton = this.elements.modal.querySelector(".preferences-confirm");
 
-		closeButton?.addEventListener("click", () => {
+		backButton?.addEventListener("click", () => {
 			this.hideModalWithoutSaving();
 			this.createBannerWithEventListeners();
 			this.showBackdrop();
@@ -773,7 +773,7 @@ class CustomCookieBanner {
 		this.setupFocusTrap(this.elements.modal);
 		this.setupModalKeyboardEvents();
 		this.setupCheckboxEventListeners();
-		closeButton?.focus();
+		backButton?.focus();
 	}
 
 	setupModalKeyboardEvents() {
