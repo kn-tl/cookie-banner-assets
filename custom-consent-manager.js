@@ -75,6 +75,7 @@ class CustomCookieBanner {
 	// ----------------------------------------------------------------
 	initializeBanner() {
 		this.createWrapper();
+		this.applyBrandTheme();
 		
 		if (this.shouldShowBackdrop()) {
 			this.createBackdrop();
@@ -865,6 +866,33 @@ class CustomCookieBanner {
 		return cookieId === 'necessary' ? true : false;
 	}
 
+	applyBrandTheme() {
+		// Check for overrides
+		const bannerElement = document.querySelector('[data-consent-banner]');
+		const dataOverride = bannerElement?.getAttribute('data-consent-theme');
+		const windowOverride = window.CONSENT_THEME_OVERRIDE;
+		const override = dataOverride || windowOverride;
+
+		// Parse override
+		const overrides = {};
+		if (override) {
+			const lowerOverride = override.toLowerCase();
+			if (lowerOverride.startsWith('#') && /^#[0-9a-f]{6}$/i.test(lowerOverride)) {
+				overrides.color = lowerOverride;
+			} else if (['ah', 'gall', 'etos'].includes(lowerOverride)) {
+				overrides.brand = lowerOverride;
+			}
+		}
+
+		// Get brand theme
+		const { color } = getBrandTheme(window.location.hostname, overrides);
+		
+		// Apply theme color if detected
+		if (color) {
+			document.documentElement.style.setProperty('--consent-brand-color', color);
+		}
+	}
+
 	preventBodyScroll() {
 		document.body.style.overflow = "hidden";
 		document.body.style.position = "fixed";
@@ -950,3 +978,49 @@ class CustomCookieBanner {
 		initCookieBanner();
 	}
 })();
+
+// ----------------------------------------------------------------
+// Brand Theme Detection
+// ----------------------------------------------------------------
+function getETLDPlusOne(hostname) {
+	const parts = (hostname || "").toLowerCase().split(".").filter(Boolean);
+	if (parts.length <= 2) return parts.join(".");
+	return parts.slice(-2).join(".");
+}
+
+function detectBrand(hostname) {
+	const h = (hostname || "").toLowerCase();
+	const root = getETLDPlusOne(h);
+	if (root.endsWith("ah.nl") || root.endsWith("albertheijn.be") || root.endsWith("ah.be")) return "ah";
+	if (root.endsWith("gall.nl")) return "gall";
+	if (root.endsWith("etos.nl")) return "etos";
+	return "unknown";
+}
+
+function getBrandTheme(hostname, overrides = {}) {
+	const BRAND_COLORS = {
+		ah: "#00ADE6",
+		gall: "#BC4D1A",
+		etos: "#000000"
+	};
+
+	// If color override provided, use it
+	if (overrides.color) {
+		const brand = (overrides.brand && overrides.brand !== "unknown") ? overrides.brand : detectBrand(hostname);
+		return { brand, color: overrides.color };
+	}
+
+	// If brand override provided, map to color
+	if (overrides.brand && overrides.brand !== "unknown" && BRAND_COLORS[overrides.brand]) {
+		return { brand: overrides.brand, color: BRAND_COLORS[overrides.brand] };
+	}
+
+	// Detect brand from hostname
+	const brand = detectBrand(hostname);
+	if (brand !== "unknown") {
+		return { brand, color: BRAND_COLORS[brand] };
+	}
+
+	// Fallback: return unknown with current color (will be applied by CSS)
+	return { brand: "unknown", color: "" };
+}
