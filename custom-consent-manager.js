@@ -893,12 +893,22 @@ class CustomCookieBanner {
 			
 			// Apply theme color if detected
 			if (color) {
+				// Set on both :root and #custom-wrapper to ensure it takes effect
 				document.documentElement.style.setProperty('--consent-brand-color', color);
+				const wrapper = document.querySelector('#custom-wrapper');
+				if (wrapper) {
+					wrapper.style.setProperty('--consent-brand-color', color);
+				}
 				console.log('Applied brand theme:', color, 'for domain:', window.location.hostname);
 				
 				// Debug: Check if the property was actually set
 				const computedColor = getComputedStyle(document.documentElement).getPropertyValue('--consent-brand-color').trim();
-				console.log('CSS custom property value:', computedColor);
+				console.log('CSS custom property value (root):', computedColor);
+				
+				if (wrapper) {
+					const wrapperColor = getComputedStyle(wrapper).getPropertyValue('--consent-brand-color').trim();
+					console.log('CSS custom property value (wrapper):', wrapperColor);
+				}
 			}
 		};
 
