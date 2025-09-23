@@ -16,6 +16,7 @@
     --boxShadow: -5px 5px 10px 0px #00000012, 0px 0px 50px 0px #0000001a;
     --fontFamily: Helvetica Neue, Segoe UI, Arial, sans-serif;
     --primaryColor: #135856;
+    --consent-brand-color: #135856;
     --backgroundColor: #FFFFFF;
     --textColor: #4B494B;
     --backdropBackgroundColor: #00000033;
@@ -53,7 +54,7 @@
 #custom-wrapper a {
     all: unset;
     display: inline-block;
-    color: var(--primaryColor);
+    color: var(--consent-brand-color);
     text-decoration: underline;
 }
 
@@ -83,8 +84,8 @@
 -------------------------------- */
 #custom-wrapper .st-button {
     color: var(--backgroundColor);
-    background-color: var(--primaryColor);
-    border: 2px solid var(--primaryColor);
+    background-color: var(--consent-brand-color);
+    border: 2px solid var(--consent-brand-color);
     padding: 10px 20px;
     text-decoration: none;
     text-align: center;
@@ -97,16 +98,16 @@
 
 #custom-wrapper .st-button--primary:hover {
     background-color: var(--backgroundColor);
-    color: var(--primaryColor);
+    color: var(--consent-brand-color);
 }
 
 #custom-wrapper .st-button--secondary {
     background-color: var(--backgroundColor);
-    color: var(--primaryColor);
+    color: var(--consent-brand-color);
 }
 
 #custom-wrapper .st-button--secondary:hover {
-    background-color: var(--primaryColor);
+    background-color: var(--consent-brand-color);
     color: var(--backgroundColor);
 }
 
@@ -168,7 +169,7 @@
     border: none;
     padding: 0px;
     background-color: transparent;
-    color: var(--primaryColor);
+    color: var(--consent-brand-color);
     cursor: pointer;
     font-size: 16px;
 }
@@ -197,7 +198,7 @@
 
 #custom-banner a {
     display: inline-block;
-    color: var(--primaryColor);
+    color: var(--consent-brand-color);
     text-decoration: underline;
     background-color: var(--backgroundColor);
 }
@@ -208,7 +209,7 @@
 
 #custom-banner a.custom-logo {
     display: block;
-    fill: var(--primaryColor); /* passed down to svg > path */
+    fill: var(--consent-brand-color); /* passed down to svg > path */
     text-decoration: none;
     margin-top: 15px;
 }
@@ -297,13 +298,13 @@
     border: 0px;
     cursor: pointer;
     background: var(--backgroundColor);
-    color: var(--primaryColor);
+    color: var(--consent-brand-color);
     align-items: center;
     justify-content: center;
 }
 
 #custom-modal .modal-close svg {
-    fill: var(--primaryColor);
+    fill: var(--consent-brand-color);
 }
 
 /* --------------------------------
@@ -414,7 +415,7 @@
 
 /* Checked Switch Styles */
 #custom-modal .switch input:checked + .switch__pill {
-    background: var(--primaryColor);
+    background: var(--consent-brand-color);
 }
 
 #custom-modal .switch input:checked ~ .switch__dot {
