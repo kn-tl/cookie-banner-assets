@@ -75,7 +75,9 @@ class CustomCookieBanner {
 	// ----------------------------------------------------------------
 	initializeBanner() {
 		this.createWrapper();
-		this.applyBrandTheme();
+		
+		// Apply brand theme after CSS is loaded
+		this.applyBrandThemeWhenReady();
 		
 		if (this.shouldShowBackdrop()) {
 			this.createBackdrop();
@@ -866,37 +868,56 @@ class CustomCookieBanner {
 		return cookieId === 'necessary' ? true : false;
 	}
 
-	applyBrandTheme() {
-		// Check for overrides
-		const bannerElement = document.querySelector('[data-consent-banner]');
-		const dataOverride = bannerElement?.getAttribute('data-consent-theme');
-		const windowOverride = window.CONSENT_THEME_OVERRIDE;
-		const override = dataOverride || windowOverride;
+	applyBrandThemeWhenReady() {
+		// Function to apply the theme
+		const applyTheme = () => {
+			// Check for overrides
+			const bannerElement = document.querySelector('[data-consent-banner]');
+			const dataOverride = bannerElement?.getAttribute('data-consent-theme');
+			const windowOverride = window.CONSENT_THEME_OVERRIDE;
+			const override = dataOverride || windowOverride;
 
-		// Parse override
-		const overrides = {};
-		if (override) {
-			const lowerOverride = override.toLowerCase();
-			if (lowerOverride.startsWith('#') && /^#[0-9a-f]{6}$/i.test(lowerOverride)) {
-				overrides.color = lowerOverride;
-			} else if (['ah', 'gall', 'etos'].includes(lowerOverride)) {
-				overrides.brand = lowerOverride;
+			// Parse override
+			const overrides = {};
+			if (override) {
+				const lowerOverride = override.toLowerCase();
+				if (lowerOverride.startsWith('#') && /^#[0-9a-f]{6}$/i.test(lowerOverride)) {
+					overrides.color = lowerOverride;
+				} else if (['ah', 'gall', 'etos'].includes(lowerOverride)) {
+					overrides.brand = lowerOverride;
+				}
 			}
+
+			// Get brand theme
+			const { color } = getBrandTheme(window.location.hostname, overrides);
+			
+			// Apply theme color if detected
+			if (color) {
+				document.documentElement.style.setProperty('--consent-brand-color', color);
+				console.log('Applied brand theme:', color, 'for domain:', window.location.hostname);
+				
+				// Debug: Check if the property was actually set
+				const computedColor = getComputedStyle(document.documentElement).getPropertyValue('--consent-brand-color').trim();
+				console.log('CSS custom property value:', computedColor);
+			}
+		};
+
+		// Try to apply immediately
+		applyTheme();
+
+		// Also apply after DOM is fully loaded
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', applyTheme);
 		}
 
-		// Get brand theme
-		const { color } = getBrandTheme(window.location.hostname, overrides);
-		
-		// Apply theme color if detected - with delay to ensure CSS is loaded
-		if (color) {
-			// Apply immediately
-			document.documentElement.style.setProperty('--consent-brand-color', color);
-			
-			// Re-apply after a short delay to override any CSS that loads later
-			setTimeout(() => {
-				document.documentElement.style.setProperty('--consent-brand-color', color);
-			}, 100);
-		}
+		// Apply after a delay to catch any late-loading CSS
+		setTimeout(applyTheme, 200);
+		setTimeout(applyTheme, 500);
+	}
+
+	applyBrandTheme() {
+		// Legacy method - kept for compatibility
+		this.applyBrandThemeWhenReady();
 	}
 
 	preventBodyScroll() {
