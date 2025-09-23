@@ -433,6 +433,7 @@ class CustomCookieBanner {
 	// ----------------------------------------------------------------
 	getBannerContent() {
 		const {
+			title = "Privacy voorkeuren",
 			description = "We use cookies on our site to enhance your user experience, provide personalized content, and analyze our traffic.",
 			acceptAllButtonText = "Accept all",
 			acceptAllButtonAccessibleLabel,
@@ -461,6 +462,7 @@ class CustomCookieBanner {
 		});
 
 		return `
+			<h1 class="banner-title">${title}</h1>
 			${description}
 			<div class="actions">
 				<div class="actions-left">
