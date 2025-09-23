@@ -462,7 +462,7 @@ class CustomCookieBanner {
 		});
 
 		return `
-			<h1 class="banner-title">${title}</h1>
+			<h2 class="banner-title">${title}</h2>
 			${description}
 			<div class="actions">
 				<div class="actions-left">
