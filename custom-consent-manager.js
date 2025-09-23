@@ -887,9 +887,15 @@ class CustomCookieBanner {
 		// Get brand theme
 		const { color } = getBrandTheme(window.location.hostname, overrides);
 		
-		// Apply theme color if detected
+		// Apply theme color if detected - with delay to ensure CSS is loaded
 		if (color) {
+			// Apply immediately
 			document.documentElement.style.setProperty('--consent-brand-color', color);
+			
+			// Re-apply after a short delay to override any CSS that loads later
+			setTimeout(() => {
+				document.documentElement.style.setProperty('--consent-brand-color', color);
+			}, 100);
 		}
 	}
 
