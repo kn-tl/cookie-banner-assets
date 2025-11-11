@@ -1,6 +1,19 @@
 // Custom Consent Manager - Based on Silktide Consent Manager
 // Original: https://silktide.com/consent-manager/
 
+// Banner Button Configuration per Country
+const BANNER_BUTTON_CONFIG = {
+	"be": {
+		rejectButtonClass: "st-button--primary"  // België: beide primary
+	},
+	"nl": {
+		rejectButtonClass: "st-button--secondary"  // Nederland: reject secondary
+	},
+	"default": {
+		rejectButtonClass: "st-button--secondary"  // Default: zelfde als NL
+	}
+};
+
 class CustomCookieBanner {
 	constructor(config = {}) {
 		this.config = config;
@@ -1022,18 +1035,6 @@ function detectCountry(hostname) {
 	// Default fallback
 	return "nl";
 }
-
-const BANNER_BUTTON_CONFIG = {
-	"be": {
-		rejectButtonClass: "st-button--primary"  // België: beide primary
-	},
-	"nl": {
-		rejectButtonClass: "st-button--secondary"  // Nederland: reject secondary
-	},
-	"default": {
-		rejectButtonClass: "st-button--secondary"  // Default: zelfde als NL
-	}
-};
 
 function getBrandTheme(hostname, overrides = {}) {
 	const BRAND_COLORS = {
