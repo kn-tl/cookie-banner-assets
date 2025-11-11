@@ -449,8 +449,9 @@ class CustomCookieBanner {
 			ariaLabel: acceptAllButtonAccessibleLabel
 		});
 
+		const buttonConfig = this.getBannerButtonConfig();
 		const rejectButton = this.createButton({
-			className: "reject-all st-button st-button--secondary",
+			className: `reject-all st-button ${buttonConfig.rejectButtonClass}`,
 			text: rejectNonEssentialButtonText,
 			ariaLabel: rejectNonEssentialButtonAccessibleLabel
 		});
@@ -479,6 +480,12 @@ class CustomCookieBanner {
 	createButton({ className, text, ariaLabel }) {
 		const ariaLabelAttr = ariaLabel && ariaLabel !== text ? ` aria-label="${ariaLabel}"` : "";
 		return `<button class="${className}"${ariaLabelAttr}>${text}</button>`;
+	}
+
+	getBannerButtonConfig() {
+		const country = detectCountry(window.location.hostname);
+		const config = BANNER_BUTTON_CONFIG[country] || BANNER_BUTTON_CONFIG["default"];
+		return config;
 	}
 
 	hasSetInitialCookieChoices() {
@@ -1003,6 +1010,30 @@ function detectBrand(hostname) {
 	if (root.endsWith("etos.nl")) return "etos";
 	return "unknown";
 }
+
+function detectCountry(hostname) {
+	const h = (hostname || "").toLowerCase();
+	const root = getETLDPlusOne(h);
+	
+	// Check TLD voor landcode
+	if (root.endsWith(".be")) return "be";
+	if (root.endsWith(".nl")) return "nl";
+	
+	// Default fallback
+	return "nl";
+}
+
+const BANNER_BUTTON_CONFIG = {
+	"be": {
+		rejectButtonClass: "st-button--primary"  // België: beide primary
+	},
+	"nl": {
+		rejectButtonClass: "st-button--secondary"  // Nederland: reject secondary
+	},
+	"default": {
+		rejectButtonClass: "st-button--secondary"  // Default: zelfde als NL
+	}
+};
 
 function getBrandTheme(hostname, overrides = {}) {
 	const BRAND_COLORS = {
