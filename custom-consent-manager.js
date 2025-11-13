@@ -476,9 +476,11 @@ class CustomCookieBanner {
 		});
 
 		return `
-			<h2 class="banner-title">${title}</h2>
-			${description}
-			<div class="actions">
+			<div class="banner-content">
+				<h2 class="banner-title">${title}</h2>
+				${description}
+			</div>
+			<div class="banner-footer">
 				<div class="actions-left">
 					${preferencesButton}
 				</div>
