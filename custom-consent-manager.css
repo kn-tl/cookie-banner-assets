@@ -284,8 +284,8 @@
 #custom-modal h1 {
     color: var(--textColor);
     font-weight: 500;
-    margin: 0px;
     font-size: 22px;
+    margin: 0px;
 }
 
 #custom-modal .modal-close {
