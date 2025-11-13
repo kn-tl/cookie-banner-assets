@@ -238,6 +238,10 @@
     align-items: center;
 }
 
+#custom-banner .st-button {
+    font-family: inherit;
+}
+
 #custom-banner .actions-row {
     display: flex;
     gap: 16px;
