@@ -290,6 +290,8 @@
     font-weight: 500;
     font-size: 22px;
     margin: 0px;
+    line-height: 1.2;
+    flex: 1;
 }
 
 #custom-modal .modal-close {
@@ -303,6 +305,9 @@
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s ease;
+    flex-shrink: 0;
+    height: 40px;
+    width: 40px;
 }
 
 #custom-modal .modal-close:hover {
