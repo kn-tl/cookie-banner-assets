@@ -573,8 +573,8 @@ class CustomCookieBanner {
 
 		return `
 			<div class="modal-header">
-				<h1>${title}</h1>
 				${backButton}
+				<h1>${title}</h1>
 			</div>
 			${description}
 			<section id="cookie-preferences">
