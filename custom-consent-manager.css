@@ -189,6 +189,7 @@
 }
 
 #custom-banner p {
+    font-size: 16px;
     line-height: 24px;
     margin: 0px 0px 15px;
 }
@@ -282,9 +283,9 @@
 
 #custom-modal h1 {
     color: var(--textColor);
-    font-size: 20px;
     font-weight: 500;
     margin: 0px;
+    font-size: 22px;
 }
 
 #custom-modal .modal-close {
@@ -324,6 +325,7 @@
 }
 
 #custom-modal p {
+    font-size: 16px;
     line-height: 24px;
     color: var(--textColor);
     margin: 0px 0px 15px;
@@ -348,6 +350,7 @@
     margin: 0px 0px 10px;
     font-weight: 700;
     color: var(--textColor);
+    font-size: 16px;
 }
 
 #custom-modal .cookie-type-content {
