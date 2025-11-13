@@ -238,8 +238,8 @@
     align-items: center;
 }
 
-#custom-banner .st-button {
-    font-family: inherit;
+#custom-banner button.st-button {
+    font-family: inherit !important;
 }
 
 #custom-banner .actions-row {
