@@ -113,7 +113,6 @@
   Banner
 -------------------------------- */
 #custom-banner {
-    font-family: var(--fontFamily);
     color: var(--textColor);
     background-color: var(--backgroundColor);
     box-sizing: border-box;
