@@ -126,6 +126,8 @@
     right: 16px;
     width: 600px;
     max-width: calc(100% - 32px);
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
     transform: translate(0, -20px);
     opacity: 0;
     animation: custom-slideInDown 350ms ease-out forwards;
