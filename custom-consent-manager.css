@@ -263,6 +263,13 @@
     display: flex;
     gap: 16px;
     align-items: center;
+    flex-direction: column;
+}
+
+@media (min-width: 600px) {
+    #custom-banner .actions-right {
+        flex-direction: row;
+    }
 }
 
 #custom-banner button.st-button {
