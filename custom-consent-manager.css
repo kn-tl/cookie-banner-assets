@@ -263,10 +263,27 @@
     display: flex;
     gap: 16px;
     align-items: center;
+    flex-direction: column;
+}
+
+@media (min-width: 450px) {
+    #custom-banner .actions-right {
+        flex-direction: row;
+    }
 }
 
 #custom-banner button.st-button {
     font-family: inherit !important;
+}
+
+#custom-banner .actions-right button.st-button {
+    width: 100%;
+}
+
+@media (min-width: 450px) {
+    #custom-banner .actions-right button.st-button {
+        width: auto;
+    }
 }
 
 #custom-banner .actions-row {
