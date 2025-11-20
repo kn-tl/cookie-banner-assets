@@ -218,7 +218,7 @@
 
 #custom-banner .banner-content {
     flex: 1;
-    min-height: 0;
+    /* min-height: 0; */
     overflow-y: auto;
 }
 
@@ -367,7 +367,7 @@
 -------------------------------- */
 #custom-modal section {
     flex: 1;
-    min-height: 0;
+    /* min-height: 0; */
     overflow-y: auto;
     margin-top: 20px;
     padding-right: 7px; /* Prevents scrollbar from appearing over the switches */
