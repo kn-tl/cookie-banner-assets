@@ -273,7 +273,7 @@
 }
 
 #custom-banner button.st-button {
-    font-family: inherit !important;
+    font-family: inherit;
 }
 
 #custom-banner .actions-right button.st-button {
@@ -522,7 +522,7 @@
 }
 
 #custom-modal button.st-button {
-    font-family: inherit !important;
+    font-family: inherit;
 }
 
 /* --------------------------------
